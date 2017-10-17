@@ -6,11 +6,12 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.obaied.sohan"
-        minSdkVersion 18
+        applicationId "com.obaied.mailme"
+        minSdkVersion 21
         targetSdkVersion 26
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "${applicationId}.runner.RxAndroidJUnitRunner"
@@ -24,38 +25,31 @@ android {
 }
 
 dependencies {
-    final SUPPORT_LIBRARY_VERSION = '26.0.0-alpha1'
+    final SUPPORT_LIBRARY_VERSION = '26.1.0'
     final CONSTRAINT_LAYOUT_VERSION = '1.0.2'
     final RETROFIT_VERSION = '2.2.0'
-    final OKHTTP_VERSION = '3.2.0'
-    final DAGGER_VERSION = '2.4'
-    final HAMCREST_VERSION = '1.3'
-    final ROBOLECTRIC_VERSION = '3.4.2'
+    final OKHTTP_VERSION = '3.6.0'
+    final DAGGER_VERSION = '2.12'
     final GLIDE_VERSION = '3.7.0'
     final RXKOTLIN_VERSION = '2.0.0-RC3'
     final RXANDROID_VERSION = '2.0.1'
-    final TIMBER_VERSION = '4.1.0'
+    final TIMBER_VERSION = '4.1.2'
     final ESPRESSO_VERSION = '2.2.2'
     final JUNIT_VERSION = '4.12'
-    final MOCKITO2_VERSION = '2.1.0'
     final SQLBRITE_VERSION = '2.0.0'
-    final DEXTER_VERSION = '4.1.0'
+    final EVENTBUS_VERSION = '3.0.0'
 
     //Kotlin stdlib
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     //Android Support
-    compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:percent:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:customtabs:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
     compile "com.android.support:cardview-v7:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:support-fragment:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
 
     //Retrofit
     compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
@@ -70,18 +64,23 @@ dependencies {
     //Rx
     compile "io.reactivex.rxjava2:rxandroid:$RXANDROID_VERSION"
     compile "io.reactivex.rxjava2:rxkotlin:$RXKOTLIN_VERSION"
+//    compile 'com.trello.rxlifecycle2:rxlifecycle:2.2.0'
+//    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.0'
+//    compile 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.2.0'
+//    compile 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle-kotlin:2.2.0'
 
-    //Dagger
-    compile "com.google.dagger:dagger:$DAGGER_VERSION"
+    //Dagger 2 with Android
+    implementation "com.google.dagger:dagger-android:$DAGGER_VERSION"
+    kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
+    compileOnly "com.google.dagger:dagger:$DAGGER_VERSION"
     kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
-    provided 'org.glassfish:javax.annotation:10.0-b28' //Required by Dagger2
 
     //Misc
     compile "com.jakewharton.timber:timber:$TIMBER_VERSION"
     compile "com.github.bumptech.glide:glide:$GLIDE_VERSION"
-    compile 'com.squareup.picasso:picasso:2.5.2'
     compile project(':colourslibrary')
-    compile "com.karumi:dexter:$DEXTER_VERSION"
+    compile "com.dropbox.core:dropbox-core-sdk:3.0.4"
+    compile "org.greenrobot:eventbus:$EVENTBUS_VERSION"
 
     // Unit tests
     testCompile "junit:junit:$JUNIT_VERSION"
@@ -89,7 +88,6 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile "org.easytesting:fest-assert-core:2.0M10"
-    testCompile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
 
     //Espresso
     androidTestCompile("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION", {

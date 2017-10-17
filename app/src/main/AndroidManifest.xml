@@ -1,37 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.obaied.sohan">
+          package="com.obaied.mailme">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
-        android:name="com.obaied.sohan.GlobalApplication"
+        android:name=".GlobalApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
-        android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
+
         <activity
-            android:name="com.obaied.sohan.ui.start.StartActivity"
+            android:name=".ui.notes.NotesActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name="com.obaied.sohan.ui.quote.QuoteActivity"
-            android:label="Quote"
-            android:theme="@style/AppTheme.QuoteActivity"/>
+            android:name=".ui.recording.RecordingActivity"
+            android:label="recordings"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.notes.NotesActivity"
+                />
+
+        </activity>
+
+        <service
+            android:name=".ui.audioplayer_service.AudioPlayerService"
+            android:enabled="true"/>
+
+        <service
+            android:name=".ui.recording_service.RecordingService"
+            android:enabled="true"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"

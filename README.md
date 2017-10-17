@@ -79,7 +79,7 @@ So what I need to do to get quotes to show up on the screen is simple:
 Here's how it looks like:
 
 ```kotlin
-    //Inside StartPresenter.kt
+    //Inside RecordingPresenter.kt
     fun subscribeToDbToFetchQuotes() {
         d { "subscribeToDbToFetchQuotes(): " }
 
@@ -110,7 +110,7 @@ Here's how it looks like:
         )
     }
 
-    //Inside StartPresenter.kt
+    //Inside RecordingPresenter.kt
     fun fetchQuotesFromApi(limit: Int) {
         //since subscribeToDbToFetchQuotes is subscribed to SqlBrite's SELECT statement,
         // whatever I push here would be updated there
@@ -130,9 +130,9 @@ Here's how it looks like:
                 )
     }
 
-    //Inside StartActivity.kt
+    //Inside RecordingActivity.kt
     override fun showEmpty() {
-        mPresenter.fetchQuotesFromApi(QUOTE_LIMIT_PER_PAGE)
+        presenter.fetchQuotesFromApi(QUOTE_LIMIT_PER_PAGE)
     }
 ```
 #### Quick explanation
