@@ -1,8 +1,5 @@
 package com.obaied.mailme.data.local
 
-import android.annotation.TargetApi
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import com.obaied.mailme.R
@@ -13,17 +10,20 @@ import com.obaied.mailme.R
 object NotificationChannelManager {
     var recordingChannelId: String? = null
 
-    @TargetApi(Build.VERSION_CODES.O)
     fun makeNotificationChannels(context: Context) {
-        val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return
+        }
+
+        val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
         // The id of the channel.
         val id = context.getString(R.string.channel_id)
         // The user-visible name of the channel.
         val name = context.getString(R.string.channel_name)
         // The user-visible description of the channel.
         val description = context.getString(R.string.channel_description)
-        val importance = NotificationManager.IMPORTANCE_LOW
-        val mChannel = NotificationChannel(id, name, importance)
+        val importance = android.app.NotificationManager.IMPORTANCE_LOW
+        val mChannel = android.app.NotificationChannel(id, name, importance)
         // Configure the notification channel.
         mChannel.description = description
         mChannel.enableLights(false)

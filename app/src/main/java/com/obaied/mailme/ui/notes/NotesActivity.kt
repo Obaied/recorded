@@ -3,6 +3,8 @@ package com.obaied.mailme.ui.notes
 import android.Manifest
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.view.ActionMode
+import android.view.Menu
 import com.obaied.mailme.R
 import com.obaied.mailme.ui.audioplayer_service.AudioPlayerManager
 import com.obaied.mailme.ui.audioplayer_service.AudioPlayerService_ClientController
@@ -11,12 +13,15 @@ import com.obaied.mailme.ui.custom.CustomSnackBarSeekBar
 import com.obaied.mailme.util.d
 import kotlinx.android.synthetic.main.activity_notes.*
 import javax.inject.Inject
+import android.view.MenuItem
 
 class NotesActivity :
         BasePermissionsActivity(),
         NotesFragment.NotesFragmentListener,
         AudioPlayerService_ClientController.ControllerListener {
+
     private var customSnackBar: CustomSnackBarSeekBar? = null
+    private var actionMode: ActionMode? = null
     private var audioPlayerServiceController = AudioPlayerService_ClientController(this)
 
     @Inject lateinit var audioPlayerManager: AudioPlayerManager
@@ -70,15 +75,28 @@ class NotesActivity :
     }
 
     private fun setupButtons() {
-        fab.setOnClickListener { navigateToRecording(this) }
+        fab.let {
+            it.setOnClickListener {
+                resetActionMode()
+
+                navigator.navigateToRecording(
+                        this@NotesActivity,
+                        it,
+                        R.color.accent_material_dark_1,
+                        android.R.drawable.ic_btn_speak_now)
+            }
+        }
+    }
+
+    private fun resetActionMode() {
+        val fragment = getFragment() as? NotesFragment
+        fragment?.fromActivity_resetSelectedRecyclerViewItem()
+
+        actionMode?.finish()
     }
 
     private fun setupFragment() {
         addFragment(R.id.fragment_container, NotesFragment())
-    }
-
-    private fun navigateToRecording(context: Context) {
-        navigator.navigateToRecording(context)
     }
 
     private fun resetAudioPlayer(context: Context) {
@@ -120,4 +138,42 @@ class NotesActivity :
         resetAudioPlayer(this)
     }
 
+    override fun toggleActionMode() {
+        if (actionMode != null) {
+            resetActionMode()
+        } else {
+            startSupportActionMode(actionModeCallback)
+        }
+    }
+
+    private val actionModeCallback = object : ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+            val menuInflater = mode.menuInflater
+            menuInflater.inflate(R.menu.menu_context_note, menu)
+            return true
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean =
+                false // Return false if nothing is done
+
+        // Called when the user selects a contextual menu item
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+            when (item.itemId) {
+                R.id.menu_delete -> {
+                    val fragment = getFragment() as? NotesFragment
+                    fragment?.fromActivity_onSelectedItemDelete()
+                    mode.finish() // Action picked, so close the CAB
+                    return true
+                }
+                else -> return false
+            }
+        }
+
+        // Called when the user exits the action mode
+        override fun onDestroyActionMode(mode: ActionMode) {
+            actionMode = null
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.obaied.mailme.ui.notes
 
 import android.support.v7.widget.RecyclerView
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class NotesAdapter
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var recordingsList: MutableList<Recording> = mutableListOf()
     var clickListener: ClickListener? = null
+    var longClickListener: LongClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent?.context)
@@ -40,11 +42,19 @@ class NotesAdapter
             itemView.item_recording_duration.text = recording.duration
             itemView.item_recording_size.text = recording.size
             itemView.setOnClickListener { clickListener!!.onClick(recording) }
+            itemView.setOnLongClickListener { view: View? ->
+                longClickListener!!.onLongClick(recording)
+                view?.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                return@setOnLongClickListener true
+            }
         }
     }
 
     interface ClickListener {
         fun onClick(recording: Recording)
     }
-}
 
+    interface LongClickListener {
+        fun onLongClick(recording: Recording)
+    }
+}

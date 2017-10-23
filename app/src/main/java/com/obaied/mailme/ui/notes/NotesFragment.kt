@@ -4,9 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.obaied.mailme.R
 import com.obaied.mailme.data.DataManager
 import com.obaied.mailme.data.local.PrefManager
@@ -30,6 +32,7 @@ class NotesFragment : BasePermissionsFragment(), NotesMvpView {
     }
 
     private var fragmentListener: NotesFragmentListener? = null
+    private var currentSelectedItem: Recording? = null
 
     @Inject lateinit var presenter: NotesPresenter
     @Inject lateinit var notesAdapter: NotesAdapter
@@ -107,6 +110,13 @@ class NotesFragment : BasePermissionsFragment(), NotesMvpView {
             }
         }
 
+        notesAdapter.longClickListener = object : NotesAdapter.LongClickListener {
+            override fun onLongClick(recording: Recording) {
+                currentSelectedItem = recording
+                fragmentListener?.toggleActionMode()
+            }
+        }
+
         //Recyclerview
         val layoutManager = LinearLayoutManager(activity)
         notes_recyclerview.layoutManager = layoutManager
@@ -126,7 +136,17 @@ class NotesFragment : BasePermissionsFragment(), NotesMvpView {
         presenter.fetchRecordings(DataManager.getVoiceNotesDir())
     }
 
+    internal fun fromActivity_onSelectedItemDelete() {
+        //TODO: presenter.deleteFile
+        Toast.makeText(activity, "deleting...${currentSelectedItem?.title}", Toast.LENGTH_SHORT).show()
+    }
+
+    internal fun fromActivity_resetSelectedRecyclerViewItem() {
+        currentSelectedItem = null
+    }
+
     interface NotesFragmentListener {
         fun onVoiceNoteClicked(uri: String?)
+        fun toggleActionMode()
     }
 }

@@ -57,7 +57,8 @@ class NotesPresenter
                                     mvpView?.showRecordings(listOfFiles)
                                 },
                                 onError = { throwable ->
-                                    d { "onError: $throwable" }
+                                    d { "onError: ${throwable.message}" }
+                                    throwable.printStackTrace()
                                     if (throwable is DataManager.CouldNotCreateVoiceNotesDirectoryException)
                                         mvpView?.onError_CouldNotCreateVoiceNotesDirectory()
                                     else

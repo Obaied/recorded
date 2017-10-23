@@ -3,6 +3,7 @@ package com.obaied.mailme.data.model
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import com.obaied.mailme.GlobalApplication
+import com.obaied.mailme.util.d
 import java.io.File
 import java.text.DecimalFormat
 import java.util.*
@@ -22,14 +23,21 @@ data class Recording(
         fun makeRecordingFromFile(file: File): Recording {
             fun getHumanReadableDuration(uri: Uri): String {
                 val mmr = MediaMetadataRetriever()
-                mmr.setDataSource(GlobalApplication.appContext, uri)
-                val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-                val millis = durationStr.toLong()
-                return String.format("%d:%d",
-                        TimeUnit.MILLISECONDS.toMinutes(millis),
-                        TimeUnit.MILLISECONDS.toSeconds(millis) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
-                )
+                d { "uri: " + uri }
+                try {
+                    mmr.setDataSource(GlobalApplication.appContext, uri)
+                    val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                    val millis = durationStr.toLong()
+                    return String.format("%d:%d",
+                            TimeUnit.MILLISECONDS.toMinutes(millis),
+                            TimeUnit.MILLISECONDS.toSeconds(millis) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+                    )
+                } catch (ex: IllegalArgumentException) {
+                    ex.printStackTrace()
+                }
+
+                return "00:00"
             }
 
             fun getHumanReadableFileSize(file: File): String {

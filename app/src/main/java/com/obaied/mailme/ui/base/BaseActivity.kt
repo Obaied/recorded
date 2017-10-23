@@ -3,7 +3,9 @@ package com.obaied.mailme.ui.base
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.obaied.mailme.R
 import com.obaied.mailme.ui.navigation.Navigator
+import com.obaied.mailme.ui.notes.NotesFragment
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -49,6 +51,9 @@ abstract class BaseActivity :
         fragmentTransaction.add(containerViewId, fragment)
         fragmentTransaction.commit()
     }
+
+    protected fun getFragment(): Fragment? =
+            fragmentManager.findFragmentById(R.id.fragment_container)
 
     override fun fragmentInjector(): AndroidInjector<Fragment>
             = fragmentInjector

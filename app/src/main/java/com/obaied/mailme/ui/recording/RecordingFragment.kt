@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import com.obaied.mailme.R
 import com.obaied.mailme.data.DataManager
 import com.obaied.mailme.data.local.PrefManager
+import com.obaied.mailme.ui.anims.FabTransform
 import com.obaied.mailme.ui.base.BasePermissionsFragment
 import com.obaied.mailme.ui.recording_service.RecordingService_ClientController
 import com.obaied.mailme.util.d
+import kotlinx.android.synthetic.main.activity_recording_dialog.*
 import kotlinx.android.synthetic.main.fragment_recording.*
 import javax.inject.Inject
 
@@ -46,6 +48,8 @@ class RecordingFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        FabTransform.setup(activity, fragment_container)
+
         return inflater?.inflate(R.layout.fragment_recording, container, false)
     }
 
