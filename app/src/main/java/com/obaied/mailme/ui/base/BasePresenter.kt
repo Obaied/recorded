@@ -14,13 +14,13 @@ open class BasePresenter<T : MvpView>
                     compositeDisposable: CompositeDisposable,
                     schedulerProvider: SchedulerProvider) {
 
-    protected var mDataManager: DataManager = dataManager
+    protected var dataManager: DataManager = dataManager
         private set
 
     protected var mCompositeDisposable = compositeDisposable
         private set
 
-    protected var mSchedulerProvider = schedulerProvider
+    protected var schedulerProvider = schedulerProvider
         private set
 
     var mvpView: T? = null

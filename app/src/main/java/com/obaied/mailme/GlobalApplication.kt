@@ -49,6 +49,5 @@ class GlobalApplication :
 
     override fun activityInjector(): AndroidInjector<Activity>
             = activityInjector
-
 }
 

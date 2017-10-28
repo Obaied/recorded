@@ -25,7 +25,7 @@ class RecordingActivity :
     }
 
     private fun setupFragment() {
-        addFragment(R.id.fragment_container, RecordingFragment.makeFragment())
+        addFragment(R.id.fragment_container, RecordingFragment())
     }
 
     private fun setupButtons() {

@@ -1,51 +1,68 @@
 package com.obaied.mailme.data
 
-import android.os.Environment
-import com.obaied.mailme.util.d
-import com.obaied.mailme.util.e
+import com.obaied.mailme.data.model.Recording
+import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.File
 import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by ab on 02/04/2017.
  */
 
-@Singleton
-class DataManager
-@Inject constructor() {
-    companion object {
-        fun getVoiceNotesDir(): String = "${Environment.getExternalStorageDirectory()}/voice_notes"
-    }
-
-    fun fetchRecordings(path: String): Single<List<File>> {
+class DataManager(private val dataManagerHelper: DataManagerHelper) {
+    fun fetchRecordingFiles(path: String): Single<List<File>> {
         return Single.create { emitter ->
             //Fetch the recordings from the user's directory
             //Check if directory exists
-            val folder = File(path)
-            if (!folder.exists()) {
-                d { "voice notes folder does not exist. Attempting to create" }
-                val success = folder.mkdir()
-
-                if (success) {
-                    d { "voice notes folder created successfully" }
-                } else {
-                    e { "couldn't create voice notes folder" }
-                    emitter.onError(CouldNotCreateVoiceNotesDirectoryException())
-                }
-                emitter.onSuccess(listOf())
+            try {
+                if (!dataManagerHelper.doesDirectoryExist_CreateIfNotExists(path))
+                    emitter.onSuccess(listOf())
+            } catch (ex: IOException) {
+                if (!emitter.isDisposed)
+                    emitter.onError(ex)
             }
 
             //folder exists. Fetch the contents
-            d { "Fetching files from $path" }
-            val directory = File(path)
-
-            val files = directory.listFiles()
-            emitter.onSuccess(files.toList())
+            val files = dataManagerHelper.listFilesInDirectory(path)
+            emitter.onSuccess(files)
         }
     }
 
-    inner class CouldNotCreateVoiceNotesDirectoryException : IOException()
+    fun deleteRecording(path: String): Completable {
+        return Completable.create { emitter ->
+            if (!dataManagerHelper.doesFileExist(path)) {
+                if (!emitter.isDisposed)
+                    emitter.onError(RecordingNotFoundException())
+            }
+
+            if (dataManagerHelper.deleteFileOrDirectory(path)) {
+                emitter.onComplete()
+            } else {
+                if (!emitter.isDisposed)
+                    emitter.onError(RecordingNotDeletedException())
+            }
+        }
+    }
+
+    fun renameFile(to: String, from: String): Completable {
+        return Completable.create { emitter ->
+            val toFile = File(to)
+            val fromFile = File(from)
+
+            if (!fromFile.exists()) {
+                if (!emitter.isDisposed)
+                    emitter.onError(RecordingNotFoundException())
+            }
+
+            fromFile.renameTo(toFile)
+            emitter.onComplete()
+        }
+    }
+
+    fun makeRecordingFromFile(file: File): Recording
+            = dataManagerHelper.makeRecordingFromFile(file)
+
+    inner class RecordingNotFoundException : IOException()
+    inner class RecordingNotDeletedException : IOException()
 }

@@ -2,6 +2,7 @@ package com.obaied.mailme.ui.recording
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.obaied.mailme.R
 import com.obaied.mailme.data.DataManager
 import com.obaied.mailme.data.local.PrefManager
 import com.obaied.mailme.ui.anims.FabTransform
+import com.obaied.mailme.ui.base.BaseActivity
 import com.obaied.mailme.ui.base.BasePermissionsFragment
 import com.obaied.mailme.ui.recording_service.RecordingService_ClientController
 import com.obaied.mailme.util.d
@@ -23,10 +25,6 @@ class RecordingFragment :
         BasePermissionsFragment(),
         RecordingMvpView,
         RecordingService_ClientController.ControllerListener {
-    companion object {
-        fun makeFragment(): RecordingFragment = RecordingFragment()
-    }
-
     @Inject lateinit var presenter: RecordingPresenter
     @Inject lateinit var prefManager: PrefManager
 
@@ -83,11 +81,7 @@ class RecordingFragment :
         fragmentListener = null
     }
 
-    override fun showMessage(message: String) {
-        toastLog(message)
-    }
-
-    override fun onError(message: String) {
+    override fun showErrorMessage(message: String) {
         toastLog(message)
     }
 
@@ -99,15 +93,29 @@ class RecordingFragment :
     override fun fromClientController_OnRecordingStopped() {
         d { "fromClientController_OnRecordingStopped" }
         // Show the user with a pop-up to save or discard the recording
-        val noteHint = getTempRecordingPath().split("/").last()
+        val noteHint = getTempRecordingPath()
+                .split("/")
+                .last()
+                .removeSuffix(BaseActivity.THREEGP)
+
         SaveRecordingDialog(activity, noteHint, object : SaveRecordingDialog.onClick {
             override fun onClick_discard() {
-                presenter.clearTempRecording(getTempRecordingPath())
+                val tempPath = getTempRecordingPath()
+
+                presenter.clearTempRecording(tempPath)
             }
 
             override fun onClick_save(noteName: String) {
-                presenter.renameLastRecording(getTempRecordingPath(),
-                        DataManager.getVoiceNotesDir() + "/$noteName")
+                var to = BaseActivity.getVoiceNotesDir() + "/$noteName"
+
+                // If "to" does not have an extension, add an extension
+                if (!to.endsWith(BaseActivity.THREEGP))
+                    to += BaseActivity.THREEGP
+
+                val from = getTempRecordingPath()
+                d { "to [$to] || from [$from]" }
+
+                presenter.renameLastRecording(to, from)
             }
         }).show()
     }
@@ -115,11 +123,13 @@ class RecordingFragment :
     override fun tempRecordingCleared() {
         toastLog("File discarded")
         resetUi()
+        activity.finishAfterTransition()
     }
 
     override fun onRecordingRenamed() {
         toastLog("File saved")
         resetUi()
+        activity.finishAfterTransition()
     }
 
     private fun resetUi() {

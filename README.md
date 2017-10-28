@@ -86,9 +86,9 @@ Here's how it looks like:
         checkViewAttached()
         mvpView?.showProgress()
 
-        mCompositeDisposable.add(mDataManager.fetchQuotesFromDb()
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
+        mCompositeDisposable.add(dataManager.fetchQuotesFromDb()
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(Consumer<List<Quote>> {
                     d { "subscribeToDbToFetchQuotes(): Received quotes: ${it.size}" }
                     mvpView?.hideProgress()
@@ -114,13 +114,13 @@ Here's how it looks like:
     fun fetchQuotesFromApi(limit: Int) {
         //since subscribeToDbToFetchQuotes is subscribed to SqlBrite's SELECT statement,
         // whatever I push here would be updated there
-        mDataManager.fetchQuotesFromApi(limit)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
+        dataManager.fetchQuotesFromApi(limit)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .onErrorResumeNext(Function { Observable.error<List<Quote>>(it) }) //OnErrorResumeNext and Observable.error() would propagate the error to the next level. So, whatever error occurs here, would get passed to onError() on the UI side
                 .flatMap { t: List<Quote> ->
                     //Chain observable as such
-                    mDataManager.setQuotesToDb(t).subscribe({}, { e { "setQuotesToDb() error occurred: ${it.localizedMessage}" } }, { d { "Done server set" } })
+                    dataManager.setQuotesToDb(t).subscribe({}, { e { "setQuotesToDb() error occurred: ${it.localizedMessage}" } }, { d { "Done server set" } })
                     Observable.just(t)
                 }
                 .subscribeBy(
@@ -137,7 +137,7 @@ Here's how it looks like:
 ```
 #### Quick explanation
 * `SubscribeToDbToFetchQuotes()` handled subscription to Db. If the data coming back from the database is empty, then we would call `fetchQuotesFromApi()` from `showEmpty()` method.
-* Inside `fetchQuotesFromApi()`, we try to fetch some data (quotes in this example) from an api with `mDataManager.fetchQuotesFromApi()`
+* Inside `fetchQuotesFromApi()`, we try to fetch some data (quotes in this example) from an api with `dataManager.fetchQuotesFromApi()`
 * We subscribe the observable to do stuff on `.io()` thread and show results on `.ui()` thread.
 * `onErrorResumeNext()` makes sure that whatever error we encounter from fetching data is caught in this method. I wanna terminate the entire chain when there is an error there, so I return an `Observable.error()`
 * `.flatmap()` is the chaining part. I wanna be able to set whatever data I get from the API to my database. I'm not transforming the data I received using `.map()`, I'm simply doing _something else_ with that data **without** transforming it.

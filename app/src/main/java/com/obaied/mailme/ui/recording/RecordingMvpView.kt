@@ -7,8 +7,7 @@ import com.obaied.mailme.ui.base.MvpView
  */
 
 interface RecordingMvpView : MvpView {
-    fun showMessage(message: String)
-    fun onError(message: String)
+    fun showErrorMessage(message: String)
     fun tempRecordingCleared()
     fun onRecordingRenamed()
 }

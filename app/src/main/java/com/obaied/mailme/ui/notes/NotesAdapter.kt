@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.obaied.mailme.R
 import com.obaied.mailme.data.model.Recording
+import com.obaied.mailme.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.item_recording.view.*
 import javax.inject.Inject
 
@@ -24,20 +25,20 @@ class NotesAdapter
         val itemView = LayoutInflater.from(parent?.context)
                 .inflate(R.layout.item_recording, parent, false)
 
-        return QuotesViewHolder(itemView)
+        return NotesViewHolder(itemView)
     }
 
     override fun getItemCount(): Int = recordingsList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        holder as QuotesViewHolder
+        holder as NotesViewHolder
         val quote = recordingsList[position]
         holder.bindRecording(quote)
     }
 
-    inner class QuotesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NotesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindRecording(recording: Recording) {
-            itemView.item_recording_title.text = recording.title
+            itemView.item_recording_title.text = recording.title.removeSuffix(BaseActivity.THREEGP)
             itemView.item_recording_timestamp.text = recording.timestamp
             itemView.item_recording_duration.text = recording.duration
             itemView.item_recording_size.text = recording.size

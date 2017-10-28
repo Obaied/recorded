@@ -37,6 +37,7 @@ class NotesActivity :
     }
 
     override fun onStart() {
+        d { "onStart()" }
         super.onStart()
         audioPlayerServiceController.onStart()
 
@@ -55,6 +56,7 @@ class NotesActivity :
     }
 
     override fun onStop() {
+        d { "onStop()" }
         super.onStop()
         audioPlayerServiceController.onStop()
 

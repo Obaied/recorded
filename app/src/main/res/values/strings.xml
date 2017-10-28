@@ -7,4 +7,5 @@
     <string name="btn_stop_recording">Stop Recording</string>
     <string name="btn_start_recording">Start Recording</string>
     <string name="transition_recording_dialog">recording_dialog</string>
+    <string name="transition_recording_fragment">recording_fragment</string>
 </resources>

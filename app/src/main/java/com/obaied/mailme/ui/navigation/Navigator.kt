@@ -32,7 +32,7 @@ class Navigator @Inject constructor() {
         val options = ActivityOptions.makeSceneTransitionAnimation(
                 activity,
                 sharedElementView,
-                activity.getString(R.string.transition_recording_dialog)
+                activity.getString(R.string.transition_recording_fragment)
         )
 
         activity.startActivity(intent, options.toBundle())

@@ -2,6 +2,7 @@ package com.obaied.mailme.ui.base
 
 import android.app.Fragment
 import android.os.Bundle
+import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import com.obaied.mailme.R
 import com.obaied.mailme.ui.navigation.Navigator
@@ -19,6 +20,11 @@ import javax.inject.Inject
 abstract class BaseActivity :
         AppCompatActivity(),
         HasFragmentInjector {
+    companion object {
+        fun getVoiceNotesDir(): String = "${Environment.getExternalStorageDirectory()}/voice_notes"
+        val THREEGP = ".3gp"
+    }
+
     private var isAttachToWindow = false
 
     @Inject lateinit var navigator: Navigator

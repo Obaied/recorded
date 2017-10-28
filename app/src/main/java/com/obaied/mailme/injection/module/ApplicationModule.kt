@@ -1,5 +1,7 @@
 package com.obaied.mailme.injection.module
 
+import com.obaied.mailme.data.DataManager
+import com.obaied.mailme.data.DataManagerHelper
 import com.obaied.mailme.data.local.PrefManager
 import com.obaied.mailme.ui.navigation.Navigator
 import com.obaied.mailme.util.Schedulers.AppSchedulerProvider
@@ -27,4 +29,13 @@ class ApplicationModule {
 
     @Provides
     fun providesPrefManager(): PrefManager = PrefManager()
+
+    @Provides
+    @Singleton
+    fun providesDataManagerHelper(): DataManagerHelper = DataManagerHelper()
+
+    @Provides
+    @Singleton
+    fun providesDataManager(dataManagerHelper: DataManagerHelper): DataManager
+            = DataManager(dataManagerHelper)
 }

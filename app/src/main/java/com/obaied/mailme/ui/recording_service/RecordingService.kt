@@ -23,7 +23,6 @@ class RecordingService :
     companion object {
         val INTENT_EXTRA_RECORDING_FILENAME = "com.obaied.INTENT_EXTRA_RECORDING_FILENAME"
 
-        //        val NOTIFY_ID = 1337
         val FOREGROUND_ID = 1338
         val CHANNEL_ID = 1339
     }
@@ -110,10 +109,10 @@ class RecordingService :
         val notificationIntent = Intent(this, RecordingActivity::class.java)
         val stackBuilder = TaskStackBuilder.create(this)
         // Adds the back stack
-        stackBuilder.addParentStack(NotesActivity::class.java)
+//        stackBuilder.addParentStack(NotesActivity::class.java)
 
         // Add the intent to the top of the stack
-        stackBuilder.addNextIntent(notificationIntent)
+        stackBuilder.addNextIntentWithParentStack(notificationIntent)
 
         // Make a pendingIntent containing the entire back stack
         val pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)

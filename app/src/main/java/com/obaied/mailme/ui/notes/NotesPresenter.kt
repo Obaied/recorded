@@ -1,7 +1,6 @@
 package com.obaied.mailme.ui.notes
 
 import com.obaied.mailme.data.DataManager
-import com.obaied.mailme.data.model.Recording
 import com.obaied.mailme.ui.base.BasePresenter
 import com.obaied.mailme.util.Schedulers.SchedulerProvider
 import com.obaied.mailme.util.d
@@ -25,8 +24,9 @@ class NotesPresenter
      * Fetch all recording files from [path]
      * Process:
      * - Fetch recordings as a Single<List<File>>
-     * - Convert to Observable<File>
-     * - Convert to Observable<Recording>
+     * - FlatMap to Observable<File>
+     * - Map to Observable<Recording>
+     * - Mark filesThatHasRecordingCounter
      * - Convert to Single<List<Recording>>
      *
      * @param path path to fetch recordings from
@@ -35,19 +35,19 @@ class NotesPresenter
     fun fetchRecordings(path: String) {
         d { "presenter_fetchRecordings()" }
 
-        val numOfFilesThatHasRecordingCounter = AtomicInteger()
+        val filesThatHasRecordingCounter = AtomicInteger()
         mCompositeDisposable.add(
-                mDataManager.fetchRecordings(path)
+                dataManager.fetchRecordingFiles(path)
                         .flatMapObservable { it -> Observable.fromIterable(it) }
-                        .map { it -> Recording.makeRecordingFromFile(it) }
-                        .flatMap { it -> if (it.title.startsWith("recording")) numOfFilesThatHasRecordingCounter.incrementAndGet(); Observable.just(it) }
+                        .map { it -> dataManager.makeRecordingFromFile(it) }
+                        .flatMap { it -> if (it.title.startsWith("recording")) filesThatHasRecordingCounter.incrementAndGet(); Observable.just(it) }
                         .toList()
-                        .subscribeOn(mSchedulerProvider.io())
-                        .observeOn(mSchedulerProvider.ui())
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
                         .subscribeBy(
                                 onSuccess = { listOfFiles ->
                                     d { "onSuccess: files [${listOfFiles.size}" }
-                                    mvpView?.setTempRecordingPathToSharedPreferences("recording_${numOfFilesThatHasRecordingCounter.incrementAndGet()}")
+                                    mvpView?.setTempRecordingPathToSharedPreferences("recording_${filesThatHasRecordingCounter.incrementAndGet()}")
 
                                     if (listOfFiles.isEmpty()) {
                                         mvpView?.showEmpty()
@@ -57,13 +57,29 @@ class NotesPresenter
                                     mvpView?.showRecordings(listOfFiles)
                                 },
                                 onError = { throwable ->
-                                    d { "onError: ${throwable.message}" }
+                                    d { "showErrorMessage: ${throwable.message}" }
                                     throwable.printStackTrace()
-                                    if (throwable is DataManager.CouldNotCreateVoiceNotesDirectoryException)
-                                        mvpView?.onError_CouldNotCreateVoiceNotesDirectory()
-                                    else
-                                        mvpView?.onError_CouldNotFetchRecordings(throwable)
+                                    mvpView?.showErrorMessage("error while fetching records")
                                 })
+        )
+    }
+
+    fun deleteRecording(path: String) {
+        mCompositeDisposable.add(
+                dataManager.deleteRecording(path)
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .subscribeBy(
+                                onComplete = {
+                                    d { "deleteRecoding: onSuccess()" }
+                                    mvpView?.onRecordingDeleted()
+                                },
+                                onError = { throwable ->
+                                    d { "deleteRecoding: showErrorMessage()" }
+                                    throwable.printStackTrace()
+                                    mvpView?.showErrorMessage("error while deleting record")
+                                }
+                        )
         )
     }
 }

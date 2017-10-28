@@ -20,6 +20,7 @@
         <activity
             android:name=".ui.notes.NotesActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.Notes">
             <intent-filter>
@@ -31,14 +32,10 @@
         <activity
             android:name=".ui.recording.RecordingActivity"
             android:label="recordings"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.notes.NotesActivity"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.Recording">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.notes.NotesActivity"
-                />
-
         </activity>
 
         <service

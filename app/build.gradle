@@ -84,10 +84,11 @@ dependencies {
 
     // Unit tests
     testCompile "junit:junit:$JUNIT_VERSION"
-    testCompile 'com.nhaarman:mockito-kotlin:1.4.0'
+    testCompile 'com.nhaarman:mockito-kotlin:1.5.0'
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile "org.easytesting:fest-assert-core:2.0M10"
+//    testCompile "org.mockito:mockito-core:2.8.9"
 
     //Espresso
     androidTestCompile("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION", {

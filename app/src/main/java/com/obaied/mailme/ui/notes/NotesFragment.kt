@@ -4,17 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.obaied.mailme.R
-import com.obaied.mailme.data.DataManager
 import com.obaied.mailme.data.local.PrefManager
 import com.obaied.mailme.data.model.Recording
+import com.obaied.mailme.ui.base.BaseActivity
 import com.obaied.mailme.ui.base.BasePermissionsFragment
-import com.obaied.mailme.ui.recording.RecordingFragment
 import com.obaied.mailme.util.d
 import kotlinx.android.synthetic.main.fragment_notes.*
 import javax.inject.Inject
@@ -79,22 +76,14 @@ class NotesFragment : BasePermissionsFragment(), NotesMvpView {
         notesAdapter.notifyDataSetChanged()
     }
 
-    override fun onError_CouldNotCreateVoiceNotesDirectory() {
-        toastLog(
-                "couldn't make voice_notes directory"
-        )
-    }
-
-    override fun onError_CouldNotFetchRecordings(throwable: Throwable) {
-        toastLog(
-                "could not fetch recordings"
-        )
+    override fun showErrorMessage(message: String) {
+        toastLog(message)
     }
 
     override fun showEmpty() {
-        toastLog(
-                "no recordings to show"
-        )
+//        toastLog(
+//                "no recordings to show"
+//        )
     }
 
     override fun setTempRecordingPathToSharedPreferences(tempRecordingPath: String) {
@@ -102,11 +91,18 @@ class NotesFragment : BasePermissionsFragment(), NotesMvpView {
         prefManager.write(activity, getString(R.string.preference_temp_recording_path), path)
     }
 
+    override fun onRecordingDeleted() {
+        d { "onRecordingDeleted()" }
+        notesAdapter.recordingsList.remove(currentSelectedItem)
+        notesAdapter.notifyDataSetChanged()
+        currentSelectedItem = null
+    }
+
     private fun setupRecyclerView() {
         //Clicklistener for recordings adapter
         notesAdapter.clickListener = object : NotesAdapter.ClickListener {
             override fun onClick(recording: Recording) {
-                fragmentListener?.onVoiceNoteClicked(recording.uri_string)
+                fragmentListener?.onVoiceNoteClicked(recording.path)
             }
         }
 
@@ -133,12 +129,14 @@ class NotesFragment : BasePermissionsFragment(), NotesMvpView {
             return
         }
 
-        presenter.fetchRecordings(DataManager.getVoiceNotesDir())
+        presenter.fetchRecordings(BaseActivity.getVoiceNotesDir())
     }
 
     internal fun fromActivity_onSelectedItemDelete() {
         //TODO: presenter.deleteFile
-        Toast.makeText(activity, "deleting...${currentSelectedItem?.title}", Toast.LENGTH_SHORT).show()
+        currentSelectedItem?.let {
+            presenter.deleteRecording(it.path)
+        }
     }
 
     internal fun fromActivity_resetSelectedRecyclerViewItem() {

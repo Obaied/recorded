@@ -3,8 +3,6 @@ package com.obaied.mailme.ui.audioplayer_service
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.preference.PreferenceManager
-import com.obaied.mailme.R
 import com.obaied.mailme.util.d
 import com.obaied.mailme.util.i
 import com.obaied.mailme.util.w
@@ -48,7 +46,7 @@ class AudioPlayerManager(val activity: Activity) {
             stopPlayer(context)
         }
 
-        val _uri_string = uri_string ?: throw IllegalStateException("uri_string is null | Calling onVoiceNoteClicked() with an null uri_string")
+        val _uri_string = uri_string ?: throw IllegalStateException("path is null | Calling onVoiceNoteClicked() with an null path")
 
         currentUriString = _uri_string
 
