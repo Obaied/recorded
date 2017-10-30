@@ -14,15 +14,12 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
-import android.transition.ArcMotion
 import android.transition.Transition
 import android.transition.TransitionValues
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
-import com.obaied.mailme.util.d
 
 /**
  * Created by ab on 19.10.17.
@@ -38,14 +35,13 @@ class ActivityCircularTransform() :
         this.color = color
         this.iconResId = icon
         duration = DEFAULT_DURATION
-        pathMotion = ArcMotion()
     }
 
     companion object {
         private val EXTRA_COLOR = "EXTRA_COLOR"
         private val EXTRA_ICON = "EXTRA_ICON"
         private val PROP_BOUNDS = "mailme:ActivityCircularTransform:bounds"
-        private val DEFAULT_DURATION = 240L
+        private val DEFAULT_DURATION = 350L
 
         /**
          * Create a [ActivityCircularTransform] from the supplied `activity` extras and set as its
@@ -77,12 +73,10 @@ class ActivityCircularTransform() :
     }
 
     override fun captureStartValues(transitionValues: TransitionValues?) {
-        d { "captureStartValues" }
         captureValues(transitionValues)
     }
 
     override fun captureEndValues(transitionValues: TransitionValues?) {
-        d { "captureEndValues" }
         captureValues(transitionValues)
     }
 
@@ -95,14 +89,9 @@ class ActivityCircularTransform() :
         val endBounds = endValues.values[PROP_BOUNDS] as Rect
         val fromFab = endBounds.width() >= startBounds.width()
 
-        val fabBounds = if (fromFab) startBounds else endBounds
         val activityBounds = if (fromFab) endBounds else startBounds
 
         val endView = endValues.view
-        val startView = startValues.view
-
-//        d { "createAnimator(): startView: [${startValues.view.javaClass.name}] | endView: [${endValues.view.javaClass.name}] | fromFab: [$fromFab]" }
-//        d { "createAnimator(): startBounds: [${startBounds.width()}] | endView: [${endBounds.width()}] " }
 
         if (!fromFab) {
             // Force the measurement of the dialog in its current, starting position.
@@ -117,27 +106,16 @@ class ActivityCircularTransform() :
         //Color fade animation
         val colorFadeAnimator = makeColorFadeAnimator(sceneRoot.context, activityBounds, fromFab, endView)
 
-        //iconResId fade animation
-//        val iconFadeAnimator = makeIconFadeAnimator(sceneRoot.context, activityBounds, fromFab, endView)
-
-        // Translation animation
-//        val translateAnimator = makeTranslateAnimator(sceneRoot.context, startBounds, endBounds, fromFab, endView)
-
         // Circular reveal
-        val circularRevealAnimator: Animator = makeCircularRevealAnimator(sceneRoot.context, fromFab, endView, startView, startBounds, endBounds, fabBounds)
-
-//        val fadeContentsAnimator: List<Animator>? = makeFadeContentAnimators(sceneRoot.context, endView, fromFab)
+        val circularRevealAnimator = makeCircularRevealAnimator(sceneRoot.context, fromFab, endView, startBounds, endBounds)
 
         val elevationAnimator = makeElevationAnimator(fromFab, endView, sceneRoot.context)
 
         val transition = AnimatorSet()
         transition.playTogether(
                 colorFadeAnimator,
-                //                iconFadeAnimator,
-                //                translateAnimator,
                 circularRevealAnimator
         )
-//        fadeContentsAnimator?.let { transition.playTogether(it) }
         elevationAnimator?.let { transition.play(elevationAnimator) }
         if (fromFab) {
             transition.addListener(object : AnimatorListenerAdapter() {
@@ -153,10 +131,8 @@ class ActivityCircularTransform() :
     private fun makeCircularRevealAnimator(context: Context,
                                            fromFab: Boolean,
                                            endView: View,
-                                           startView: View,
                                            startBounds: Rect,
-                                           endBounds: Rect,
-                                           fabBounds: Rect): Animator {
+                                           endBounds: Rect): Animator {
         val circularRevealAnimator: Animator
         if (fromFab) {
             circularRevealAnimator = ViewAnimationUtils.createCircularReveal(
@@ -182,10 +158,12 @@ class ActivityCircularTransform() :
                 override fun onAnimationEnd(animation: Animator) {
                     endView.outlineProvider = object : ViewOutlineProvider() {
                         override fun getOutline(view: View, outline: Outline) {
-                            val left = (view.width - fabBounds.width()) / 2
-                            val top = (view.height - fabBounds.height()) / 2
+                            val left = endBounds.left
+                            val top = endBounds.top - endBounds.height()
+                            val bottom = endBounds.bottom - endBounds.height()
+                            val right = endBounds.right
                             outline.setOval(
-                                    left, top, left + fabBounds.width(), top + fabBounds.height())
+                                    left, top, right, bottom)
                             view.clipToOutline = true
                         }
                     }
@@ -193,25 +171,6 @@ class ActivityCircularTransform() :
             })
         }
         return circularRevealAnimator
-    }
-
-
-    private fun makeIconFadeAnimator(context: Context, endBounds: Rect, fromFab: Boolean, endView: View): Animator? {
-        val iconDrawable = ContextCompat.getDrawable(context, iconResId).mutate()
-        if (!fromFab) iconDrawable.alpha = 0
-
-        iconDrawable.setBounds(
-                (endBounds.width() - iconDrawable.intrinsicWidth) / 2,
-                (endBounds.height() - iconDrawable.intrinsicHeight) / 2,
-                ((endBounds.width() - iconDrawable.intrinsicWidth) / 2) + iconDrawable.intrinsicWidth,
-                ((endBounds.height() - iconDrawable.intrinsicHeight) / 2) + iconDrawable.intrinsicHeight
-        )
-
-        endView.overlay.add(iconDrawable)
-
-        val iconFade = ObjectAnimator.ofInt(iconDrawable, "alpha", if (fromFab) 0 else 255)
-        iconFade.interpolator = AnimUtils.getFastOutSlowInInterpolator(context)
-        return iconFade
     }
 
     private fun makeElevationAnimator(fromFab: Boolean, endView: View, context: Context): Animator? {
@@ -227,24 +186,6 @@ class ActivityCircularTransform() :
         return elevation
     }
 
-    private fun makeFadeContentAnimators(context: Context, endView: View, fromFab: Boolean): List<Animator>? {
-        var fadeContents: List<Animator>? = null
-        if (endView is ViewGroup) {
-            fadeContents = ArrayList(endView.childCount)
-            for (i in endView.childCount - 1 downTo 0) {
-                val child = endView.getChildAt(i)
-                val fade = ObjectAnimator.ofFloat(child, View.ALPHA, if (fromFab) 1f else 0f)
-                if (fromFab) {
-                    child.alpha = 0f
-                }
-//                fade.duration = animatorDuration
-                fade.interpolator = AnimUtils.getFastOutSlowInInterpolator(context)
-                fadeContents.add(fade)
-            }
-        }
-        return fadeContents
-    }
-
     private fun makeColorFadeAnimator(context: Context, bounds: Rect, fromFab: Boolean, endView: View): ObjectAnimator? {
         val fabColor = ColorDrawable(color)
         fabColor.setBounds(0, 0, bounds.width(), bounds.height())
@@ -258,26 +199,6 @@ class ActivityCircularTransform() :
 //        colorFade.duration = animatorDuration
         colorFade.interpolator = AnimUtils.getFastOutSlowInInterpolator(context);
         return colorFade
-    }
-
-    private fun makeTranslateAnimator(context: Context, startBounds: Rect, endBounds: Rect, fromFab: Boolean, endView: View): ObjectAnimator? {
-        val translationX = startBounds.centerX() - endBounds.centerX()
-        val translationY = startBounds.centerY() - endBounds.centerY()
-        if (fromFab) {
-            endView.translationX = translationX.toFloat()
-            endView.translationY = translationY.toFloat()
-        }
-        val translateAnimator = ObjectAnimator.ofFloat(
-                endView,
-                View.TRANSLATION_X,
-                View.TRANSLATION_Y,
-                if (fromFab) pathMotion.getPath(translationX.toFloat(), translationY.toFloat(), 0.0F, 0.0F)
-                else pathMotion.getPath(0.0f, 0.0f, -translationX.toFloat(), -translationY.toFloat())
-        )
-//        translateAnimator.duration = animatorDuration
-        translateAnimator.interpolator = AnimUtils.getFastOutSlowInInterpolator(context);
-
-        return translateAnimator
     }
 
     private fun captureValues(transitionValues: TransitionValues?) {

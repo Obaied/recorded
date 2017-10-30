@@ -103,7 +103,7 @@ class NotesActivity :
 
     private fun resetAudioPlayer(context: Context) {
         dismissSnackbar()
-        audioPlayerManager.stopPlayer(context)
+//        audioPlayerManager.stopPlayer(context)
     }
 
     private fun dismissSnackbar() {

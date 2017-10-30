@@ -12,8 +12,6 @@ class RecordingActivity :
         setContentView(R.layout.activity_recording_new)
 
         setupFragment()
-
-//        setupButtons()
     }
 
     override fun getDesiredPermissions(): Array<String> =
@@ -26,13 +24,5 @@ class RecordingActivity :
     private fun setupFragment() {
         addFragment(R.id.fragment_container, RecordingFragment())
     }
-
-//    private fun setupButtons() {
-//        root_layout.let {
-//            root_layout.setOnClickListener {
-//                this@RecordingActivity.finishAfterTransition()
-//            }
-//        }
-//    }
 }
 

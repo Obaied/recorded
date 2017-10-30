@@ -60,8 +60,7 @@ class AudioPlayerService : Service(),
     override fun onBind(intent: Intent): IBinder? = null
 
     override fun onDestroy() {
-        val _mediaPlayer = mediaPlayer ?: throw IllegalStateException("Mediaplayer is null")
-        stopPlayer(_mediaPlayer)
+        stopPlayer()
 
         audioPlayerServerController.onStop()
 
@@ -99,7 +98,8 @@ class AudioPlayerService : Service(),
         if (!_mediaPlayer.isPlaying) {
             startPlayer(_mediaPlayer)
         } else {
-            pausePlayer(_mediaPlayer)
+//            pausePlayer(_mediaPlayer)
+            stopPlayer()
         }
     }
 
@@ -115,12 +115,19 @@ class AudioPlayerService : Service(),
         audioPlayerServerController.onPlayerPaused()
     }
 
-    private fun stopPlayer(mediaPlayer: MediaPlayer) {
-        mediaPlayer.stop()
-        mediaPlayer.reset()
-        mediaPlayer.release()
-        progressTimer?.cancel()
-        progressTimer = null
+    private fun stopPlayer() {
+        d { "stopPlayer()" }
+        if (mediaPlayer != null) {
+            mediaPlayer?.stop()
+            mediaPlayer?.reset()
+            mediaPlayer?.release()
+            mediaPlayer = null
+        }
+
+        if (progressTimer != null) {
+            progressTimer?.cancel()
+            progressTimer = null
+        }
 
         audioPlayerServerController.onPlayerStopped()
     }

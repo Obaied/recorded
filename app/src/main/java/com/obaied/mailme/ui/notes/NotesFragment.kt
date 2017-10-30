@@ -22,10 +22,6 @@ import javax.inject.Inject
 class NotesFragment :
         BasePermissionsFragment(),
         NotesMvpView {
-    companion object {
-        val PERMISSIONREQUEST_EXTERNAL_STORAGE = 666
-    }
-
     init {
         retainInstance = true
     }

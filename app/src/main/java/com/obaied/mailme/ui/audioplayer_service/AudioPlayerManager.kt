@@ -19,17 +19,20 @@ class AudioPlayerManager(val activity: Activity) {
         d { "togglePlayer()" }
 
         if (currentUriString == uri_string) {
-            pausePlayer()
+//            pausePlayer()
+            stopPlayer(activity)
         } else {
             playNewRecording(context, uri_string)
         }
     }
 
-    fun stopPlayer(context: Context) {
+    private fun stopPlayer(context: Context) {
         d { "stopRecording()" }
 
         context.stopService(Intent(context, AudioPlayerService::class.java))
         resetAudioManager()
+
+        EventBus.getDefault().post(AudioPlayerService_ClientController.Event_TogglePlayer())
     }
 
     fun onPlayerInitialized() {
