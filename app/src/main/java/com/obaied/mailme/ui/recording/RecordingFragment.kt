@@ -2,20 +2,18 @@ package com.obaied.mailme.ui.recording
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.obaied.mailme.R
-import com.obaied.mailme.data.DataManager
 import com.obaied.mailme.data.local.PrefManager
-import com.obaied.mailme.ui.anims.FabTransform
+import com.obaied.mailme.ui.anims.ActivityCircularTransform
 import com.obaied.mailme.ui.base.BaseActivity
 import com.obaied.mailme.ui.base.BasePermissionsFragment
 import com.obaied.mailme.ui.recording_service.RecordingService_ClientController
 import com.obaied.mailme.util.d
-import kotlinx.android.synthetic.main.activity_recording_dialog.*
-import kotlinx.android.synthetic.main.fragment_recording.*
+import kotlinx.android.synthetic.main.activity_recording_new.*
+import kotlinx.android.synthetic.main.fragment_recording_new.*
 import javax.inject.Inject
 
 /**
@@ -46,9 +44,9 @@ class RecordingFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        FabTransform.setup(activity, fragment_container)
+        ActivityCircularTransform.setup(activity, fragment_container)
 
-        return inflater?.inflate(R.layout.fragment_recording, container, false)
+        return inflater?.inflate(R.layout.fragment_recording_new, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -87,7 +85,7 @@ class RecordingFragment :
 
     override fun fromClientController_OnRecordingStarted() {
         d { "fromClientController_OnRecordingStarted" }
-        btn_record.text = "Stop Recording"
+        btn_stop_recording.text = "Stop Recording"
     }
 
     override fun fromClientController_OnRecordingStopped() {
@@ -133,7 +131,7 @@ class RecordingFragment :
     }
 
     private fun resetUi() {
-        btn_record.let {
+        btn_stop_recording.let {
             if (recordingServiceClientController.isServiceRunning()) {
                 it.text = getString(R.string.btn_stop_recording)
             } else {

@@ -85,7 +85,7 @@ class NotesActivity :
                         this@NotesActivity,
                         it,
                         R.color.accent_material_dark_1,
-                        android.R.drawable.ic_btn_speak_now)
+                        R.drawable.ic_mic_none_white_24dp)
             }
         }
     }

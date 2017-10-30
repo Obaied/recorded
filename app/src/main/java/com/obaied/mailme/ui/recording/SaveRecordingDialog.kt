@@ -18,6 +18,8 @@ class SaveRecordingDialog(context: Context, private val hint: String, private va
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.dialog_savefile)
+        setCancelable(false)
+        setCanceledOnTouchOutside(false)
 
         val editText = findViewById<EditText>(R.id.dialog_edittext)
         editText.requestFocus()

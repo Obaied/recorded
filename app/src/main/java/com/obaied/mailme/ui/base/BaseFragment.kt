@@ -18,7 +18,6 @@ open class BaseFragment : Fragment() {
     }
 
     override fun onAttach(context: Context?) {
-        d { "calling baseFragment onAttach" }
         AndroidInjection.inject(this)
         super.onAttach(context)
     }

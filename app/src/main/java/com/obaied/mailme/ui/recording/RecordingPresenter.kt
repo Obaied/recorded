@@ -11,10 +11,9 @@ import javax.inject.Inject
  * Created by ab on 19/03/2017.
  */
 
-class RecordingPresenter
-@Inject constructor(dataManager: DataManager,
-                    compositeDisposable: CompositeDisposable,
-                    schedulerProvider: SchedulerProvider)
+class RecordingPresenter(dataManager: DataManager,
+                         compositeDisposable: CompositeDisposable,
+                         schedulerProvider: SchedulerProvider)
     : BasePresenter<RecordingMvpView>(
         dataManager,
         compositeDisposable,

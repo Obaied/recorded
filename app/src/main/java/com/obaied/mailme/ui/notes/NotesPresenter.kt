@@ -8,18 +8,15 @@ import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.atomic.AtomicInteger
-import javax.inject.Inject
 
 /**
  * Created by ab on 19/03/2017.
  */
 
-class NotesPresenter
-@Inject constructor(dataManager: DataManager,
-                    compositeDisposable: CompositeDisposable,
-                    schedulerProvider: SchedulerProvider)
+class NotesPresenter(dataManager: DataManager,
+                     compositeDisposable: CompositeDisposable,
+                     schedulerProvider: SchedulerProvider)
     : BasePresenter<NotesMvpView>(dataManager, compositeDisposable, schedulerProvider) {
-
     /**
      * Fetch all recording files from [path]
      * Process:

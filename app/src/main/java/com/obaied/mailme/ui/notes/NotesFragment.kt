@@ -19,7 +19,9 @@ import javax.inject.Inject
 /**
  * Created by ab on 10.10.17.
  */
-class NotesFragment : BasePermissionsFragment(), NotesMvpView {
+class NotesFragment :
+        BasePermissionsFragment(),
+        NotesMvpView {
     companion object {
         val PERMISSIONREQUEST_EXTERNAL_STORAGE = 666
     }
@@ -133,7 +135,6 @@ class NotesFragment : BasePermissionsFragment(), NotesMvpView {
     }
 
     internal fun fromActivity_onSelectedItemDelete() {
-        //TODO: presenter.deleteFile
         currentSelectedItem?.let {
             presenter.deleteRecording(it.path)
         }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-
+    <!--android:tint="@color/holo_red_light"-->
     <ImageView
         android:id="@+id/image_mic"
         android:layout_width="100dp"
@@ -14,12 +14,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="56dp"
-        android:backgroundTint="@color/background_light"
         android:scaleType="centerCrop"
+        android:src="@drawable/ic_mic_none_white_24dp_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_mic_none_white_24dp"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/text_duration"
@@ -41,7 +40,7 @@
         android:layout_marginBottom="120dp"
         android:layout_marginEnd="64dp"
         android:layout_marginStart="64dp"
-        android:text="Stop Recording"
+        android:text="Start Recording"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>

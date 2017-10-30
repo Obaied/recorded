@@ -15,7 +15,6 @@ import javax.inject.Inject
  * Created by ab on 06.10.17.
  */
 class NotesAdapter
-@Inject constructor()
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var recordingsList: MutableList<Recording> = mutableListOf()
     var clickListener: ClickListener? = null

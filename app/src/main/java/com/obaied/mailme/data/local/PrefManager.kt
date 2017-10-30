@@ -8,7 +8,7 @@ import javax.inject.Singleton
  * Created by ab on 15.10.17.
  */
 @Singleton
-class PrefManager() {
+class PrefManager {
     fun write(context: Context, key: String, value: String) {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
         val editor = sharedPref.edit()
