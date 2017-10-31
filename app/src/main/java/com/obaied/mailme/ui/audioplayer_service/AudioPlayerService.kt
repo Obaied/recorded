@@ -60,25 +60,20 @@ class AudioPlayerService : Service(),
     override fun onBind(intent: Intent): IBinder? = null
 
     override fun onDestroy() {
-        stopPlayer()
-
+        d { "onDestroy()" }
         audioPlayerServerController.onStop()
 
         super.onDestroy()
     }
 
     override fun onCompletion(mp: MediaPlayer?) {
-        progressTimer?.cancel()
-        progressTimer = null
-        Toast.makeText(this@AudioPlayerService, "completed", Toast.LENGTH_SHORT).show()
-
+        stopPlayer()
         audioPlayerServerController.onPlayerCompleted()
     }
 
     override fun onPrepared(mediaPlayer: MediaPlayer) {
         audioPlayerServerController.onPlayerInitialized()
 
-        d { "duration: ${mediaPlayer.duration}" }
         val timerTask = object : TimerTask() {
             override fun run() {
                 val normalizedPos: Int = ((mediaPlayer.currentPosition.toFloat() / mediaPlayer.duration.toFloat()) * 100).toInt()
@@ -130,5 +125,7 @@ class AudioPlayerService : Service(),
         }
 
         audioPlayerServerController.onPlayerStopped()
+
+        stopSelf()
     }
 }

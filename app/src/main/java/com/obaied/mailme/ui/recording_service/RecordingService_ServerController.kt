@@ -1,6 +1,5 @@
 package com.obaied.mailme.ui.recording_service
 
-import com.obaied.mailme.ui.audioplayer_service.AudioPlayerService_ClientController
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
@@ -16,22 +15,29 @@ class RecordingService_ServerController(private val listener: ControllerListener
         EventBus.getDefault().unregister(this)
     }
 
-    class Event_OnRecordingStarted
-
     fun onRecordingStarted() {
-        EventBus.getDefault().post(Event_OnRecordingStarted())
+        if (EventBus.getDefault().hasSubscriberForEvent(Event_OnRecordingStarted::class.java))
+            EventBus.getDefault().post(Event_OnRecordingStarted())
     }
 
-    class Event_OnRecordingStopped
-
     fun onRecordingStopped() {
-        EventBus.getDefault().post(Event_OnRecordingStopped())
+        if (EventBus.getDefault().hasSubscriberForEvent(Event_OnRecordingStopped::class.java))
+            EventBus.getDefault().post(Event_OnRecordingStopped())
+    }
+
+    fun onRecordingProgress(duration: String) {
+        if (EventBus.getDefault().hasSubscriberForEvent(Event_OnRecordingProgress::class.java))
+            EventBus.getDefault().post(Event_OnRecordingProgress(duration))
     }
 
     @Subscribe
     fun stopRecording(event: RecordingService_ClientController.Event_StopRecording) {
         listener.fromEventController_stopRecording()
     }
+
+    class Event_OnRecordingStarted
+    class Event_OnRecordingStopped
+    class Event_OnRecordingProgress(val duration: String)
 
     interface ControllerListener {
         fun fromEventController_stopRecording()

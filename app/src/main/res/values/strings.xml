@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">MailMe</string>
+    <string name="app_name">Recorded</string>
     <string name="preference_temp_recording_path">temp_recording_path</string>
     <string name="channel_description">Used to record voice notes</string>
     <string name="channel_name">recording_service</string>
     <string name="channel_id">recording_service_id</string>
-    <string name="btn_stop_recording">Stop Recording</string>
-    <string name="btn_start_recording">Start Recording</string>
     <string name="transition_recording_dialog">recording_dialog</string>
     <string name="transition_recording_fragment">recording_fragment</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="mic">mic</string>
 </resources>

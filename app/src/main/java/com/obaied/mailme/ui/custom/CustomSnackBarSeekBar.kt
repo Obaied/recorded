@@ -41,17 +41,20 @@ class CustomSnackBarSeekBar(private val coordinatorLayoutView: View,
         // Hide the text
         val textView = layout.findViewById<View>(android.support.design.R.id.snackbar_text) as TextView
         textView.visibility = View.INVISIBLE
+
         return snackbar
     }
 
     @SuppressLint("InflateParams")
-    private fun inflateSnackbarCustomLayout(): View?
+    private fun inflateSnackbarCustomLayout(): View
             = layoutInflater.inflate(R.layout.layout_snackbar, null)
 
-    private fun setupSeekBar(snackbarLayout: View?): SeekBar? {
-        val seekBar = snackbarLayout?.findViewById<SeekBar>(R.id.seekbar)
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupSeekBar(snackbarLayout: View): SeekBar? {
+        val seekBar = snackbarLayout.findViewById<SeekBar>(R.id.seekbar)
         this.seekBar?.isIndeterminate = false
         this.seekBar?.max = 100
+        this.seekBar?.setOnTouchListener({ _, _ -> true })
 
         return seekBar
     }

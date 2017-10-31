@@ -52,9 +52,15 @@ class RecordingService_ClientController(private val listener: ControllerListener
         listener.fromClientController_OnRecordingStopped()
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRecordingProgress(event: RecordingService_ServerController.Event_OnRecordingProgress) {
+        listener.fromClientController_OnRecordingProgress(event.duration)
+    }
+
     interface ControllerListener {
         fun fromClientController_OnRecordingStarted()
         fun fromClientController_OnRecordingStopped()
+        fun fromClientController_OnRecordingProgress(duration: String)
     }
 
     class Event_StopRecording

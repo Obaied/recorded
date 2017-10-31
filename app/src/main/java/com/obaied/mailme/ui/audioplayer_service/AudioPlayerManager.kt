@@ -30,7 +30,6 @@ class AudioPlayerManager(val activity: Activity) {
         d { "stopRecording()" }
 
         context.stopService(Intent(context, AudioPlayerService::class.java))
-        resetAudioManager()
 
         EventBus.getDefault().post(AudioPlayerService_ClientController.Event_TogglePlayer())
     }
@@ -69,14 +68,14 @@ class AudioPlayerManager(val activity: Activity) {
         EventBus.getDefault().post(AudioPlayerService_ClientController.Event_TogglePlayer())
     }
 
-    private fun resetAudioManager() {
+    fun resetAudioManager() {
         didInitialize = false
         currentUriString = null
     }
 
-    fun isAudioServiceRunning(context: Context): Boolean {
+    fun isAudioServiceRunning(): Boolean {
         val value = EventBus.getDefault().hasSubscriberForEvent(AudioPlayerService_ClientController.Event_TogglePlayer::class.java)
-        d { "has subscriber: ${value}" }
+        d { "has subscriber: $value" }
         return value
     }
 }

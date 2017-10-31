@@ -1,10 +1,11 @@
 package com.obaied.mailme.ui.notes
 
 import android.Manifest
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.view.ActionMode
 import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import com.obaied.mailme.R
 import com.obaied.mailme.ui.audioplayer_service.AudioPlayerManager
 import com.obaied.mailme.ui.audioplayer_service.AudioPlayerService_ClientController
@@ -13,13 +14,13 @@ import com.obaied.mailme.ui.custom.CustomSnackBarSeekBar
 import com.obaied.mailme.util.d
 import kotlinx.android.synthetic.main.activity_notes.*
 import javax.inject.Inject
-import android.view.MenuItem
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 
 class NotesActivity :
         BasePermissionsActivity(),
         NotesFragment.NotesFragmentListener,
         AudioPlayerService_ClientController.ControllerListener {
-
     private var customSnackBar: CustomSnackBarSeekBar? = null
     private var actionMode: ActionMode? = null
     private var audioPlayerServiceController = AudioPlayerService_ClientController(this)
@@ -31,26 +32,33 @@ class NotesActivity :
         setContentView(R.layout.activity_notes)
         setSupportActionBar(toolbar)
 
+        Fabric.with(this, Crashlytics())
+
         setupFragment()
 
         setupButtons()
     }
 
     override fun onStart() {
-        d { "onStart()" }
         super.onStart()
         audioPlayerServiceController.onStart()
 
-        if (audioPlayerManager.isAudioServiceRunning(this)) {
+        // TODO: Shouldn't this be always on? Override the attribute in the snackbar that dismisses
+        // this
+        if (audioPlayerManager.isAudioServiceRunning()) {
             customSnackBar = CustomSnackBarSeekBar(
                     findViewById(R.id.coordinator_layout),
                     layoutInflater)
             customSnackBar?.show()
+        } else {
+            // Reset audio player upon start since there could be a change that the AudioPlayerService
+            // could not reach this activity. This would happen if app was in the background
+            resetAudioPlayer()
         }
     }
 
     override fun onDestroy() {
-        resetAudioPlayer(this)
+        resetAudioPlayer()
 
         super.onDestroy()
     }
@@ -74,6 +82,47 @@ class NotesActivity :
         d { "onVoiceNoteClicked with uri [${uri}]" }
 
         audioPlayerManager.togglePlayer(this, uri)
+    }
+
+    override fun fromClientController_onPlayerInitialized() {
+        audioPlayerManager.onPlayerInitialized()
+
+        customSnackBar = CustomSnackBarSeekBar(
+                findViewById(R.id.coordinator_layout),
+                layoutInflater)
+        customSnackBar?.show()
+    }
+
+    override fun fromClientController_OnPlayerStarted() {
+    }
+
+    override fun fromClientController_OnPlayerPaused() {
+    }
+
+    override fun fromClientController_OnPlayerStopped() {
+        d { "fromClientController_OnPlayerStopped()" }
+
+        resetAudioPlayer()
+    }
+
+    override fun fromClientController_OnPlayerProgress(position: Int) {
+        d { "fromClientController_OnPlayerProgress() with progress [$position]" }
+        customSnackBar?.setProgress(position)
+    }
+
+    override fun fromClientController_OnPlayerCompleted() {
+        d { "fromClientController_OnPlayerCompleted" }
+        Toast.makeText(this, "completed", Toast.LENGTH_SHORT).show()
+
+        resetAudioPlayer()
+    }
+
+    override fun toggleActionMode() {
+        if (actionMode != null) {
+            resetActionMode()
+        } else {
+            startSupportActionMode(actionModeCallback)
+        }
     }
 
     private fun setupButtons() {
@@ -101,51 +150,14 @@ class NotesActivity :
         addFragment(R.id.fragment_container, NotesFragment())
     }
 
-    private fun resetAudioPlayer(context: Context) {
+    private fun resetAudioPlayer() {
         dismissSnackbar()
-//        audioPlayerManager.stopPlayer(context)
+        audioPlayerManager.resetAudioManager()
     }
 
     private fun dismissSnackbar() {
         customSnackBar?.dismiss()
         customSnackBar = null
-    }
-
-    override fun fromClientController_onPlayerInitialized() {
-        audioPlayerManager.onPlayerInitialized()
-
-        customSnackBar = CustomSnackBarSeekBar(
-                findViewById(R.id.coordinator_layout),
-                layoutInflater)
-        customSnackBar?.show()
-    }
-
-    override fun fromClientController_OnPlayerStarted() {
-    }
-
-    override fun fromClientController_OnPlayerPaused() {
-    }
-
-    override fun fromClientController_OnPlayerStopped() {
-        d { "onPlayerStopped()" }
-        resetAudioPlayer(this)
-    }
-
-    override fun fromClientController_OnPlayerProgress(position: Int) {
-        d { "onPlayerProgress() with progress [${position}]" }
-        customSnackBar?.setProgress(position)
-    }
-
-    override fun fromClientController_OnPlayerCompleted() {
-        resetAudioPlayer(this)
-    }
-
-    override fun toggleActionMode() {
-        if (actionMode != null) {
-            resetActionMode()
-        } else {
-            startSupportActionMode(actionModeCallback)
-        }
     }
 
     private val actionModeCallback = object : ActionMode.Callback {

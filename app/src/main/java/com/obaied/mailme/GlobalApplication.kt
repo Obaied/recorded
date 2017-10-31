@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import com.obaied.mailme.data.local.NotificationChannelManager
 import com.obaied.mailme.injection.component.DaggerApplicationComponent
+import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -29,10 +30,22 @@ class GlobalApplication :
         super.onCreate()
         appContext = this
 
+        initLeakCanary()
         initTimber()
         initDagger()
 
         NotificationChannelManager.makeNotificationChannels(this)
+    }
+
+    override fun activityInjector(): AndroidInjector<Activity>
+            = activityInjector
+
+    private fun initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return
+        }
+
+        LeakCanary.install(this)
     }
 
     private fun initDagger() {
@@ -46,8 +59,4 @@ class GlobalApplication :
             Timber.plant(Timber.DebugTree())
         }
     }
-
-    override fun activityInjector(): AndroidInjector<Activity>
-            = activityInjector
 }
-

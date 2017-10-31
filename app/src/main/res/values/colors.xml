@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="text_secondary_dark">#8a000000</color> <!-- 54% -->
@@ -8,11 +8,12 @@
     <color name="gray">#DBDBDD</color>
     <color name="black">#000000</color>
     <color name="transparent_black">#a3000000</color>
+    <color name="transparent_black_50perc">#65000000</color>
     <color name="mid_gray">#9E9E9E</color>
     <color name="line_gray">#DEDEDE</color>
     <color name="comment_background">#FFDFDFDF</color>
     <color name="accent_material_dark_1">#80cbc4</color>
 
     <color name="scrim">#99323232</color>
-    <color name="bg_action_mode">#757575</color>
+    <color name="bg_action_mode">#462c5b</color>
 </resources>

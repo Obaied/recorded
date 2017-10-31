@@ -1,10 +1,13 @@
 package com.obaied.mailme.ui.recording
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.obaied.colours.Colour
 import com.obaied.mailme.R
 import com.obaied.mailme.data.local.PrefManager
 import com.obaied.mailme.ui.anims.ActivityCircularTransform
@@ -12,8 +15,8 @@ import com.obaied.mailme.ui.base.BaseActivity
 import com.obaied.mailme.ui.base.BasePermissionsFragment
 import com.obaied.mailme.ui.recording_service.RecordingService_ClientController
 import com.obaied.mailme.util.d
-import kotlinx.android.synthetic.main.activity_recording_new.*
-import kotlinx.android.synthetic.main.fragment_recording_new.*
+import kotlinx.android.synthetic.main.activity_recording.*
+import kotlinx.android.synthetic.main.fragment_recording.*
 import javax.inject.Inject
 
 /**
@@ -46,13 +49,17 @@ class RecordingFragment :
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         ActivityCircularTransform.setup(activity, fragment_container)
 
-        return inflater?.inflate(R.layout.fragment_recording_new, container, false)
+        return inflater?.inflate(R.layout.fragment_recording, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        resetUi()
+        if (recordingServiceClientController.isServiceRunning()) {
+            resetUi(true)
+        } else {
+            resetUi(false)
+        }
 
         presenter.attachView(this)
     }
@@ -85,11 +92,14 @@ class RecordingFragment :
 
     override fun fromClientController_OnRecordingStarted() {
         d { "fromClientController_OnRecordingStarted" }
-        btn_stop_recording.text = "Stop Recording"
+        btn_toggle_recording.text = getString(R.string.stop)
+
+        playRecordingAnimation()
     }
 
     override fun fromClientController_OnRecordingStopped() {
         d { "fromClientController_OnRecordingStopped" }
+
         // Show the user with a pop-up to save or discard the recording
         val noteHint = getTempRecordingPath()
                 .split("/")
@@ -118,26 +128,54 @@ class RecordingFragment :
         }).show()
     }
 
+    override fun fromClientController_OnRecordingProgress(duration: String) {
+        text_duration.let {
+            it.text = duration
+        }
+    }
+
     override fun tempRecordingCleared() {
         toastLog("File discarded")
-        resetUi()
+
         activity.finishAfterTransition()
     }
 
     override fun onRecordingRenamed() {
         toastLog("File saved")
-        resetUi()
+
         activity.finishAfterTransition()
     }
 
-    private fun resetUi() {
-        btn_stop_recording.let {
-            if (recordingServiceClientController.isServiceRunning()) {
-                it.text = getString(R.string.btn_stop_recording)
-            } else {
-                it.text = getString(R.string.btn_start_recording)
-            }
+    private fun playRecordingAnimation() {
+        var translate: ObjectAnimator? = null
+        var reveal: ObjectAnimator? = null
+        var crossFade: ObjectAnimator? = null
 
+        btn_toggle_recording.let {
+            translate = ObjectAnimator.ofFloat(it, "translationY", 200f)
+        }
+
+        text_duration.let {
+            reveal = ObjectAnimator.ofFloat(it, View.ALPHA, 0f, 1f)
+        }
+
+        image_mic.let {
+            crossFade = ObjectAnimator.ofArgb(it, "colorFilter", Colour.holoRedLightColor())
+        }
+
+        val animatorSet = AnimatorSet()
+        animatorSet.duration = 700L
+
+        animatorSet.playTogether(
+                translate,
+                reveal,
+                crossFade
+        )
+        animatorSet.start()
+    }
+
+    fun resetUi(isRecordingActive: Boolean) {
+        btn_toggle_recording.let {
             it.setOnClickListener {
                 if (!didGrantPermissions()) {
                     return@setOnClickListener
@@ -145,6 +183,25 @@ class RecordingFragment :
 
                 recordingServiceClientController.toggleRecording(activity,
                         getTempRecordingPath())
+            }
+        }
+
+        if (!isRecordingActive) {
+            btn_toggle_recording.let {
+                it.text = getString(R.string.start)
+            }
+        } else {
+            btn_toggle_recording.let {
+                it.text = getString(R.string.stop)
+                it.translationY = 200f
+            }
+
+            text_duration.let {
+                it.alpha = 1f
+            }
+
+            image_mic.let {
+                it.setColorFilter(Colour.holoRedLightColor())
             }
         }
     }
