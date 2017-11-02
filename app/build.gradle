@@ -16,8 +16,21 @@ android {
         versionName "1.0"
         testInstrumentationRunner "${applicationId}.runner.RxAndroidJUnitRunner"
     }
+
     buildTypes {
+        final ADMOB_APP_ID = "ca-app-pub-8775592523731654~1080626197"
+        final ADMOB_UNIT_ID = "ca-app-pub-8775592523731654/5454985470"
+
+        debug {
+            buildConfigField "String", "ADMOB_APP_ID", "\"$ADMOB_APP_ID\""
+            buildConfigField "String", "ADMOB_UNIT_ID", "\"$ADMOB_UNIT_ID\""
+
+        }
+
         release {
+            buildConfigField "String", "ADMOB_APP_ID", "\"$ADMOB_APP_ID\""
+            buildConfigField "String", "ADMOB_UNIT_ID", "\"$ADMOB_UNIT_ID\""
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
