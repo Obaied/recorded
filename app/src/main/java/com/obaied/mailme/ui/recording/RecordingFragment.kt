@@ -137,13 +137,13 @@ class RecordingFragment :
     override fun tempRecordingCleared() {
         toastLog("File discarded")
 
-        activity.finishAfterTransition()
+        fragmentListener?.dismissActivityAndCleanupUi()
     }
 
     override fun onRecordingRenamed() {
         toastLog("File saved")
 
-        activity.finishAfterTransition()
+        fragmentListener?.dismissActivityAndCleanupUi()
     }
 
     private fun playRecordingAnimation() {
@@ -209,5 +209,7 @@ class RecordingFragment :
     private fun getTempRecordingPath(): String =
             prefManager.read(activity, getString(R.string.preference_temp_recording_path))
 
-    interface RecordingFragmentListener
+    interface RecordingFragmentListener {
+        fun dismissActivityAndCleanupUi()
+    }
 }

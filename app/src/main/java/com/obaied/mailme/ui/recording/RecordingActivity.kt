@@ -2,12 +2,14 @@ package com.obaied.mailme.ui.recording
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.View
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.obaied.mailme.BuildConfig
 import com.obaied.mailme.R
 import com.obaied.mailme.ui.base.BasePermissionsActivity
 import com.obaied.mailme.ui.recording_service.RecordingService
-import com.obaied.mailme.util.d
+import kotlinx.android.synthetic.main.activity_recording.*
 
 class RecordingActivity :
         BasePermissionsActivity(),
@@ -17,10 +19,25 @@ class RecordingActivity :
         setContentView(R.layout.activity_recording)
 
         setupFragment()
+
+        setupAdmob()
+    }
+
+    private fun setupAdmob() {
+        adView.let {
+            MobileAds.initialize(this, BuildConfig.ADMOB_APP_ID)
+
+            val adRequestBuilder = AdRequest.Builder()
+
+            if (BuildConfig.DEBUG) {
+                adRequestBuilder.addTestDevice("9A08C46A1196FB9E8A5EBB3F7459386E")
+            }
+
+            it.loadAd(adRequestBuilder.build())
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
-        d { "onNewIntent()" }
         super.onNewIntent(intent)
 
         // Check if this intent came from a notification
@@ -37,6 +54,11 @@ class RecordingActivity :
             arrayOf(android.Manifest.permission.RECORD_AUDIO)
 
     override fun onBackPressed() {
+        dismissActivityAndCleanupUi()
+    }
+
+    override fun dismissActivityAndCleanupUi() {
+        adView.visibility = View.GONE
         finishAfterTransition()
     }
 

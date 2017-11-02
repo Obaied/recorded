@@ -1,6 +1,7 @@
 package com.obaied.mailme.ui.notes
 
 import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.view.ActionMode
 import android.view.Menu
@@ -15,6 +16,8 @@ import com.obaied.mailme.util.d
 import kotlinx.android.synthetic.main.activity_notes.*
 import javax.inject.Inject
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.ads.MobileAds
+import com.obaied.mailme.BuildConfig
 import io.fabric.sdk.android.Fabric
 
 class NotesActivity :
