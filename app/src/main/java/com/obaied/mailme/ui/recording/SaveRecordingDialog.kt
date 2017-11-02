@@ -12,7 +12,7 @@ import com.obaied.mailme.R
  * Created by ab on 06.10.17.
  */
 
-class SaveRecordingDialog(context: Context, private val hint: String, private val listener: onClick) :
+class SaveRecordingDialog(context: Context, private val hint: String, private val listener: OnClick) :
         Dialog(context) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +20,8 @@ class SaveRecordingDialog(context: Context, private val hint: String, private va
         setContentView(R.layout.dialog_savefile)
         setCancelable(false)
         setCanceledOnTouchOutside(false)
+        window.setBackgroundDrawableResource(android.R.color.transparent) // Set to have transparent edges
+
 
         val editText = findViewById<EditText>(R.id.dialog_edittext)
         editText.requestFocus()
@@ -31,18 +33,18 @@ class SaveRecordingDialog(context: Context, private val hint: String, private va
             val noteName = if (editText.text.isEmpty()) editText.hint.toString()
             else editText.text.toString()
 
-            listener.onClick_save(noteName)
+            listener.onClick_Save(noteName)
             dismiss()
         }
 
         findViewById<View>(R.id.dialog_discard).setOnClickListener {
-            listener.onClick_discard()
+            listener.onClick_Discard()
             dismiss()
         }
     }
 
-    public interface onClick {
-        fun onClick_save(noteName: String)
-        fun onClick_discard()
+    interface OnClick {
+        fun onClick_Save(noteName: String)
+        fun onClick_Discard()
     }
 }

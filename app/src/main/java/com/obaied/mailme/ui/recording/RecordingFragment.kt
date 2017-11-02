@@ -106,14 +106,14 @@ class RecordingFragment :
                 .last()
                 .removeSuffix(BaseActivity.THREEGP)
 
-        SaveRecordingDialog(activity, noteHint, object : SaveRecordingDialog.onClick {
-            override fun onClick_discard() {
+        SaveRecordingDialog(activity, noteHint, object : SaveRecordingDialog.OnClick {
+            override fun onClick_Discard() {
                 val tempPath = getTempRecordingPath()
 
                 presenter.clearTempRecording(tempPath)
             }
 
-            override fun onClick_save(noteName: String) {
+            override fun onClick_Save(noteName: String) {
                 var to = BaseActivity.getVoiceNotesDir() + "/$noteName"
 
                 // If "to" does not have an extension, add an extension

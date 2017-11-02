@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    android:id="@+id/root_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center">
@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/spacing_xlarge"
         android:background="@drawable/dialog_background_black"
-        android:elevation="6dp"
+        android:elevation="@dimen/dialog_elevation"
         android:padding="@dimen/spacing_large"
         android:paddingTop="@dimen/spacing_xlarge">
 
