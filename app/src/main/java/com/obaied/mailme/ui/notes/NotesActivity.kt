@@ -190,4 +190,17 @@ class NotesActivity :
             actionMode = null
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_notes, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        return if (id == R.id.action_about) {
+            navigator.displayAboutScreen(this)
+            true
+        } else super.onOptionsItemSelected(item)
+    }
 }

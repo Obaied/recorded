@@ -38,6 +38,14 @@
             android:theme="@style/AppTheme.Recording">
         </activity>
 
+        <activity
+            android:name=".ui.about.AboutActivity"
+            android:label="About Recorded"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme.About">
+        </activity>
+
         <service
             android:name=".ui.audioplayer_service.AudioPlayerService"
             />
@@ -48,7 +56,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="e1ffdc87b2dcdf6ad481fff17f3b7972b7c36678" />
+            android:value="e1ffdc87b2dcdf6ad481fff17f3b7972b7c36678"/>
 
     </application>
 

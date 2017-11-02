@@ -9,4 +9,6 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="mic">mic</string>
+    <string name="about"><![CDATA[<p><b>Recorded</b><br><p>Recorded is an open-sourced voice notes recorder</p><p>Programming by Abdullah Obaied</p><div align="center"><a href="https://github.com/Obaied">GitHub</a></div><br><p>Ui & Ux by Ardavan Hp</p><div align="center"><a href="https://dribbble.com/Ahp94">Dribbble</a></div><br><p>The source code of this project is available here: <a href="https://github.com/recorded">GitHub</a></p><p>]]></string>
+    <string name="action_about">About</string>
 </resources>

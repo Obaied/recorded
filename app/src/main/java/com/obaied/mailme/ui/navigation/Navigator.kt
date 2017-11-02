@@ -2,11 +2,13 @@ package com.obaied.mailme.ui.navigation
 
 import android.app.Activity
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.view.View
 import com.obaied.mailme.R
+import com.obaied.mailme.ui.about.AboutActivity
 import com.obaied.mailme.ui.anims.ActivityCircularTransform
 import com.obaied.mailme.ui.recording.RecordingActivity
 import javax.inject.Inject
@@ -34,6 +36,10 @@ class Navigator @Inject constructor() {
         )
 
         activity.startActivity(intent, options.toBundle())
-//        activity.startActivity(intent)
+    }
+
+    fun displayAboutScreen(context: Context) {
+        val intent = Intent(context, AboutActivity::class.java)
+        context.startActivity(intent)
     }
 }

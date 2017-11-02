@@ -9,10 +9,12 @@
     <color name="black">#000000</color>
     <color name="transparent_black">#a3000000</color>
     <color name="transparent_black_50perc">#65000000</color>
+    <color name="transparent_white_50perc">#70ffffff</color>
     <color name="mid_gray">#9E9E9E</color>
     <color name="line_gray">#DEDEDE</color>
     <color name="comment_background">#FFDFDFDF</color>
-    <color name="accent_material_dark_1">#80cbc4</color>
+    <color name="accent_material_dark_1">@color/holo_red_light</color>
+    <color name="android_material_gray">#ff212121</color>
 
     <color name="scrim">#99323232</color>
     <color name="bg_action_mode">#462c5b</color>

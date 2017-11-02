@@ -24,8 +24,8 @@ import javax.inject.Inject
  */
 class RecordingFragment :
         BasePermissionsFragment(),
-        RecordingMvpView,
-        RecordingService_ClientController.ControllerListener {
+        RecordingService_ClientController.ControllerListener,
+        RecordingMvpView {
     @Inject lateinit var presenter: RecordingPresenter
     @Inject lateinit var prefManager: PrefManager
 
