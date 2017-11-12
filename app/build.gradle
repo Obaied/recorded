@@ -40,8 +40,6 @@ android {
 dependencies {
     final SUPPORT_LIBRARY_VERSION = '26.1.0'
     final CONSTRAINT_LAYOUT_VERSION = '1.0.2'
-//    final RETROFIT_VERSION = '2.2.0'
-//    final OKHTTP_VERSION = '3.6.0'
     final DAGGER_VERSION = '2.12'
     final GLIDE_VERSION = '3.7.0'
     final RXKOTLIN_VERSION = '2.0.0-RC3'
@@ -49,9 +47,9 @@ dependencies {
     final TIMBER_VERSION = '4.1.2'
     final ESPRESSO_VERSION = '2.2.2'
     final JUNIT_VERSION = '4.12'
-//    final SQLBRITE_VERSION = '2.0.0'
     final EVENTBUS_VERSION = '3.0.0'
-    final GOOGLE_PLAY_SERVICES_VERSION = '11.4.2'
+    final GOOGLE_PLAY_SERVICES_VERSION = '11.6.0'
+    final LEAKCANARY_VERSION = '1.5.4'
 
     // Kotlin stdlib
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -65,16 +63,6 @@ dependencies {
     implementation "com.android.support:support-fragment:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support.constraint:constraint-layout:$CONSTRAINT_LAYOUT_VERSION"
     implementation "com.google.android.gms:play-services-ads:$GOOGLE_PLAY_SERVICES_VERSION"
-
-    // Retrofit
-//    implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
-//    implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
-//    implementation "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
-//    implementation "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"
-//    implementation "com.squareup.okhttp3:logging-interceptor:$OKHTTP_VERSION"
-
-    // SqlBrite
-//    implementation "com.squareup.sqlbrite2:sqlbrite-kotlin:$SQLBRITE_VERSION"
 
     // Rx
     implementation "io.reactivex.rxjava2:rxandroid:$RXANDROID_VERSION"
@@ -96,18 +84,18 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$GLIDE_VERSION"
     implementation project(':colourslibrary')
     implementation "org.greenrobot:eventbus:$EVENTBUS_VERSION"
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$LEAKCANARY_VERSION"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$LEAKCANARY_VERSION"
 
     // Unit tests
-    testCompile "junit:junit:$JUNIT_VERSION"
-    testCompile 'com.nhaarman:mockito-kotlin:1.5.0'
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testCompile "org.easytesting:fest-assert-core:2.0M10"
+    testImplementation "junit:junit:$JUNIT_VERSION"
+    testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testImplementation "org.easytesting:fest-assert-core:2.0M10"
 
     // Espresso
-    androidTestCompile("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION", {
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }

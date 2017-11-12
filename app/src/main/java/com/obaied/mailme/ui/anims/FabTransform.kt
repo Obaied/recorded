@@ -168,7 +168,7 @@ class FabTransform() :
     }
 
     private fun makeIconFadeAnimator(context: Context, dialogBounds: Rect, fromFab: Boolean, endView: View): Animator? {
-        val iconDrawable = ContextCompat.getDrawable(context, iconResId).mutate()
+        val iconDrawable = ContextCompat.getDrawable(context, iconResId)!!.mutate()
         if (!fromFab) iconDrawable.alpha = 0
 
         iconDrawable.setBounds(

@@ -16,6 +16,6 @@
     <color name="accent_material_dark_1">@color/holo_red_light</color>
     <color name="android_material_gray">#ff212121</color>
 
-    <color name="scrim">#99323232</color>
+    <color name="scrim">#99000000</color>
     <color name="bg_action_mode">#462c5b</color>
 </resources>

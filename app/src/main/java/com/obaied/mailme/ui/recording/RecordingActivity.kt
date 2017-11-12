@@ -30,7 +30,7 @@ class RecordingActivity :
             val adRequestBuilder = AdRequest.Builder()
 
             if (BuildConfig.DEBUG) {
-                adRequestBuilder.addTestDevice("9A08C46A1196FB9E8A5EBB3F7459386E")
+                adRequestBuilder.addTestDevice("13B5197226B86E6646A642C81B04B86D")
             }
 
             it.loadAd(adRequestBuilder.build())

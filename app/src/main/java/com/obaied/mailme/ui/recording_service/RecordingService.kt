@@ -10,8 +10,11 @@ import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.support.v4.app.NotificationCompat
+import com.obaied.mailme.R
 import com.obaied.mailme.data.local.NotificationChannelManager
 import com.obaied.mailme.ui.recording.RecordingActivity
+import com.obaied.mailme.util.AppUtil
+import com.obaied.mailme.util.AppUtil.getHumanReadableDuration
 import com.obaied.mailme.util.d
 import com.obaied.mailme.util.e
 import java.io.IOException
@@ -135,7 +138,7 @@ class RecordingService :
         b.setOngoing(true)
                 .setContentTitle("Recording")
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(android.R.drawable.alert_light_frame)
+                .setSmallIcon(R.drawable.ic_recording_notification)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannelManager.recordingChannelId?.let { b.setChannelId(it) }
@@ -148,22 +151,8 @@ class RecordingService :
         private val startTime: Long = SystemClock.uptimeMillis()
 
         override fun run() {
-            fun getHumanReadableDuration(millis: Long): String {
-                var _millis = millis
-                val hours = TimeUnit.MILLISECONDS.toHours(_millis)
-                _millis -= TimeUnit.HOURS.toMillis(_millis)
-
-                val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
-                _millis -= TimeUnit.MINUTES.toMillis(_millis)
-
-
-                val seconds = TimeUnit.MILLISECONDS.toSeconds(millis)
-
-                return String.format("%02d:%02d:%02d", hours, minutes, seconds)
-            }
-
             val delta = SystemClock.uptimeMillis() - startTime
-            recordingServiceServerController.onRecordingProgress(getHumanReadableDuration(delta))
+            recordingServiceServerController.onRecordingProgress(AppUtil.getHumanReadableDuration(delta))
         }
     }
 }
