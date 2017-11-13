@@ -1,24 +1,89 @@
-# Recorded
-Simple voice-notes recording app, made with MVP and Kotlin. The idea is for this to be used as a boilerplate project for client-server apps and a reference on how to use the below libraries with Kotlin. Inspiration is taken from the [ribot's android-boilerplate](https://github.com/ribot/android-boilerplate/) project.
-Libraries and tools included:
+# About
+Open-source, voice notes recording app.
+
+This project is to be used as a boilerplate project for client-server apps and a reference on how to use the below libraries with Kotlin. Inspiration is taken from the [ribot's android-boilerplate](https://github.com/ribot/android-boilerplate/) project.
 
 ## Libraries
-- RecyclerView
 - Reactive extensions by [RxKotlin 2](https://github.com/ReactiveX/RxKotlin)
 - Dependency injection by [Dagger 2](http://google.github.io/dagger/)
 - Logging by [Timber](https://github.com/JakeWharton/timber) with native Kotlin extensions
-- complimentary and randomized colour algorithms by [Colours](https://github.com/Obaied/colours)
+- Complimentary and randomized colour algorithms by [Colours](https://github.com/Obaied/colours)
 - Mocking with [Mockito-Kotlin](https://github.com/nhaarman/mockito-kotlin)
 - [Checkstyle](http://checkstyle.sourceforge.net/), [PMD](https://pmd.github.io/) and [Findbugs](http://findbugs.sourceforge.net/) for code analysis
 
 ## Architecture
-The architecture is mostly based on ribot's Android architecture [here](https://github.com/ribot/android-boilerplate#architecture): 
+The architecture is mostly based on a modified version of ribot's Android architecture [here](https://github.com/ribot/android-boilerplate#architecture): 
 
 ![](https://github.com/ribot/android-guidelines/raw/master/architecture_guidelines/architecture_diagram.png)
 
-The idea is to be able to compartmentalize every aspect of the project to small, chunkable pieces that can be unit-tested easily and without pain. Also, extending the project and introducing newbies to it should not be a chaotic task. The architecture does contain a fair amount of nuts and bolts but a competent learner would find that the architecture has a solid and stable structure that is easy to wrap one's head around after consulting this README, running the unit tests and trying to fork and extend the code.
+The idea is to be able to compartmentalize every aspect of the project to testable pieces. Also, extending the project and introducing newbies to it should not be a chaotic task. The architecture does contain a fair amount of nuts and bolts, but its nothing too alien to [Clean Architecture](https://www.youtube.com/watch?v=Nsjsiz2A9mg). Feel free to consult this [fantastic boilerplate by Android10](https://github.com/android10/Android-CleanArchitecture) as another source of knowledge
 
-The following should be familiar to those familiar with MVVM, MVC, or MVP architectures.
+### Dependency Injection
+I made an extensive write-up [over here](https://github.com/Obaied/BareBonesAndroidDagger) relating how I approach dependency injection. I'd love to get any feedback on it. Drop an issue and we'll talk. It would be good to list down what I've written over there with a couple of related examples to Recorded.
+
+[Dagger 2.12 released proper support for Android](https://google.github.io/dagger/android). 
+
+> P.S: My apologies if Google did an uber-transformation to the posted approach in a latter release and I didn't update it here. Please drop me an issue and I'll definitely take a look at it, unless my taco cryptocurrency kicks off, then you're on your own, dude :)
+
+Support for Android is pretty amazing. It allows the developer to basically make a BaseActivity/BaseFragment and have Dagger take care of the injection process for you. The BareBonesAndroidDagger approach I took was basically trying to separate the dependencies I need based on the level of the view hierarchy.
+
+The hierarchy goes as follows:
+- **Application Level**: Dependencies for all views and for the custom Application class.
+- **Activity Level**: Dependencies for a specific activity.
+- **Fragment Level**: Dependencies for a specific fragment.
+
+In the [BareBonesAndroidDagger](https://github.com/Obaied/BareBonesAndroidDagger), I provide a detailed class breakdown. For here, I'll just write about a couple of Dagger modules.
+
+#### Class Breakdown: `ApplicationModule`
+
+```
+@Module
+class ApplicationModule {
+    @Provides
+    @Singleton
+    fun provideNavigator(): Navigator = Navigator()
+
+    @Provides
+    fun providesCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+    @Provides
+    fun providesSchedulerProvider(): SchedulerProvider = AppSchedulerProvider()
+
+    @Provides
+    fun providesPrefManager(): PrefManager = PrefManager()
+
+    @Provides
+    @Singleton
+    fun providesDataManagerHelper(): DataManagerHelper = DataManagerHelper()
+
+    @Provides
+    @Singleton
+    fun providesDataManager(dataManagerHelper: DataManagerHelper): DataManager
+            = DataManager(dataManagerHelper)
+}
+```
+
+This level is the **Application Level**. Whatever is here, is shared with all activities, fragments, and the custom application class. I understand that somethings would not make sense for say the application class to have an activity navigator. I try to keep things as simple as possible since dependency injection graphs is one of those things that can get too chaotic too fast. Three levels of isolation served me in the project. If there needs to be more levels, that's easily achievable as well.
+
+#### Class Breakdown: `NotesFragmentModule`
+
+```
+@Module
+class NotesFragmentModule {
+    @Provides
+    fun providesNotesAdapter() = NotesAdapter()
+
+    @Provides
+    fun providesNotesPresenter(dataManager: DataManager,
+                               compositeDisposable: CompositeDisposable,
+                               schedulerProvider: SchedulerProvider)
+            = NotesPresenter(dataManager,
+            compositeDisposable,
+            schedulerProvider)
+}
+```
+
+This module injects things specifically and only into `NotesFragment`. The dependencies necessary for calling `providesNotesPresenter` are all injected from our `ApplicationModule` automagically!
 
 ### UI: Activities, Presenters and MvpViews
 The UI is a very straight-forward implementation of MVP architecture.
@@ -29,152 +94,47 @@ The UI is a very straight-forward implementation of MVP architecture.
 
 To give an example:
 
-* An _activity_ starts (`onCreate()` is called)
+* A view starts up (`onCreate()` is called). This could be an activity or a fragment. This project follows the use of fragments for their delicious `setRetainInstance(true)`
 * a _presenter_ is initialized and called to go fetch stuff from an API or a database (it doesn't matter which in this level of analysis)
 * The _presenter_ plays nice and talks to what would be explained later as a _DataManager_ to fetch the data from an API or a database. 
 * The asyncronuous callback to that call would be handled by the _presenter_ which would do any necessary non-UI changes.
-* If there are any UI changes, The _presenter_ would talk to the _activity_ through an _MvpView_ interface callback. Those UI changes could actually be many. In the case of a simple fetching of one quote and displaying it on the screen, there are at least 3 scenarios in which UI would be affected:
-  * The quote shows up normally
-  * The quote doesn't show up (server is not working or no connection is available)
-  * The fetching process is faced with a big fat exception
+* If there are any UI changes, The _presenter_ would talk to the responsible view through an _MvpView_ interface callback. Those UI changes could actually be many. In the case of a simple fetching of one quote and displaying it on the screen, there are at least 3 scenarios in which UI would be affected in a simple client-server app:
+  * On Completed: The fetched data shows up normally
+  * On Empty: The fetched data doesn't show up (server is not working or no connection is available)
+  * On Error: The fetching process is faced with a big fat exception
 
-Those are just simple scenarios. There could also be UI changes when the fetch process starts and ends. For example, it would display a progress loader when the fetch starts, and hides it when the fetch ends. As you can see, there are a lot of scenarios that a _presenter_ would need to take to the governing _activity_. All these cases constitute a *contract* between the _presenter_ and _activity_ which is detailed inside an _MvpView_ interface.
+Those are just simple scenarios. There could also be UI changes when the fetch process starts and ends. For example, it would display a progress loader when the fetch starts, and hides it when the fetch ends. As you can see, there are a lot of scenarios that a _presenter_ would need to take to the governing view. All these cases constitute a *contract* between the _presenter_ and view which is detailed inside an _MvpView_ interface.
 
-That's pretty much it. We have some input and output without worrying too much about who's doing what in the kitchen. It makes handling data and separating the tasks of UI and data much easier. 
+That's pretty much it. We have some input and output without worrying too much about who's doing what in the kitchen. It makes testing easy. 
 
-The rest of the architecture would deal with how to handle the data using the _DataManager_
+### Data: Rationale and Testing
+So, what needs to be tested from this business side? Based on Clean Architecture standards, this is the core level of the hierarchy.
 
-P.S: I primarily follow a *no-fragment all-activity* approach so I wouldn't have to worry about where to put the _presenter_ instance if I have one activity and five fragments, each requiring their own API calls.
+This level can be broken down into the following: Local, Models, Remote, Managers, and Helpers
 
+#### Locals
+Basically, everything relating to an existing database. You'll put your **Room**, DAO or SQLite wrappers here.
 
-### Data: The Overarching *DataManager*
-_DataManager_ is a singleton class that handles all the necessary data operations whether its local or remote. 
-By _Local_, I mean relating to an already existing database on the device. 
-By _Remote_, I mean relating to an API or something that would require a network call
+#### Models
+Any POJOs that are related to the database. Kotlin calls those _Data Classes_ but that naming is a bit confusing in here (We put Data Classes in Data category!!)
 
-### Data: Local, Remote, and Models
-I follow `ribot's` original separation of data and data handling to _Local_, _Remote_ and _Model_.
+#### Remote
+RetroFit Services or things relating to an API call or networking library.
 
-_Local_ refers to all the classes and things needed to handle an SQLite database. This project uses *SQLBrite* for handling databases with reactive extensions. There exists three classes in this category:
+P.S: This project doesn't use a database since the voice notes are already saved in an external directory on the device. The separation of concerns between unit-testable and non-unit-testable helpers is still the same.
 
-* _DatabaseHelper_ which handles any data-related tasks coming from _DataManager_
-* _Db_ which simplifies the process of creating queries by having constant names and static functions to deal with cursors.
-* _DbOpenHelper_ which is a boilerplate class that's used to create the database initially. I doubt there's a lot of innovation to be made in this class. Its a plain-old boilerplate.
+#### Managers
+This is just our _DataManager_. There could be many if the data section was too big to contain. This class must be 100% unit-testable. By that, I mean no imports to any Android library since JUnit can't mock that. Last thing I want to use is Robolectric for unit tests. Anything relating to Android, Java IO, or anything that can't be directly mocked is relayed to our Helpers category
 
-The _Remote_ category contains Retrofit2 Services. There's nothing too special about making these particular Retrofit2 services that's any different from what the *Getting Started* page of RetroFit2 describes.
+#### Helpers
+As mentioned before. These are native calls to Android or Java libraries that cannot be mocked.
 
-One interesting class which I add to this _Remote_ category is called _ServicesHelper_. The problem with RetroFit2 Services is that they are interfaces. I don't like to include logic in interfaces, even if Kotlin or Java 8 allows it to an extent. Sometimes, its helpful to handle the data coming from the API in a certain way and it would be necessary to have that behaviour abstracted to a class that can be mocked with Mockito. In the case of my project, I had a quotes API that gets a single quote only. I needed to a list of quotes to have an infinite scroller behaviour. Ideally, I'd ask the backend to make an extra endpoint that serves my needs, but that won't happen with a public API, so I had to make the API call multiple times and concatenate the result. Luckily, I'm using Rx which makes the job a lot easier. I used _ServicesHelper_ to write a piece of unit-tested and mockable logic that would serve multiple quotes instead of one.
+An example to this interaction in the project would be fetching files from the device's external downloads directory.
+The method to fetch that is `fetchRecordingFiles(path)` in `DataManager` class. Problem is that I can't test this method directly because this method requires importing `java.file.io`. This can't be mocked in any simple way. I really don't wanna waste time googling "How to mock File class java". The actual interaction with `Java.File.IO` is relayed to `DataManagerHelper` class. The two methods I use for `fetchRecordingFiles(path)` are:
+- `DataManagerHelper.doesDirectoryExist_CreateIfNotExists()`
+- `DataManagerHelper.listFilesInDirectory()`
 
-### Data: Chaining observables and handling errors
-So what I need to do to get quotes to show up on the screen is simple:
-- Fetch quotes from database
-- If database is empty (first launch), fetch quotes from API
-- set the fetched quotes from API to the database
-
-Here's how it looks like:
-
-```kotlin
-    //Inside StartPresenter.kt
-    fun subscribeToDbToFetchQuotes() {
-        d { "subscribeToDbToFetchQuotes(): " }
-
-        checkViewAttached()
-        mvpView?.showProgress()
-
-        mCompositeDisposable.add(mDataManager.fetchQuotesFromDb()
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(Consumer<List<Quote>> {
-                    d { "subscribeToDbToFetchQuotes(): Received quotes: ${it.size}" }
-                    mvpView?.hideProgress()
-
-                    if (it.isEmpty()) {
-                        mvpView?.showEmpty()
-                        return@Consumer
-                    }
-
-                    mvpView?.showQuotes(it)
-
-                }, Consumer<Throwable> {
-                    e(it, { "subscribeToDbToFetchQuotes(): Received error" })
-
-                    mvpView?.hideProgress()
-                    mvpView?.showError(it.message!!)
-                }
-                )
-        )
-    }
-
-    //Inside StartPresenter.kt
-    fun fetchQuotesFromApi(limit: Int) {
-        //since subscribeToDbToFetchQuotes is subscribed to SqlBrite's SELECT statement,
-        // whatever I push here would be updated there
-        mDataManager.fetchQuotesFromApi(limit)
-                .subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .onErrorResumeNext(Function { Observable.error<List<Quote>>(it) }) //OnErrorResumeNext and Observable.error() would propagate the error to the next level. So, whatever error occurs here, would get passed to onError() on the UI side
-                .flatMap { t: List<Quote> ->
-                    //Chain observable as such
-                    mDataManager.setQuotesToDb(t).subscribe({}, { e { "setQuotesToDb() error occurred: ${it.localizedMessage}" } }, { d { "Done server set" } })
-                    Observable.just(t)
-                }
-                .subscribeBy(
-                        onNext = {},
-                        onError = { mvpView?.showError("No internet connection") },
-                        onComplete = { d { "onComplete(): done with fetching quotes from api" } }
-                )
-    }
-
-    //Inside StartActivity.kt
-    override fun showEmpty() {
-        mPresenter.fetchQuotesFromApi(QUOTE_LIMIT_PER_PAGE)
-    }
-```
-#### Quick explanation
-* `SubscribeToDbToFetchQuotes()` handled subscription to Db. If the data coming back from the database is empty, then we would call `fetchQuotesFromApi()` from `showEmpty()` method.
-* Inside `fetchQuotesFromApi()`, we try to fetch some data (quotes in this example) from an api with `mDataManager.fetchQuotesFromApi()`
-* We subscribe the observable to do stuff on `.io()` thread and show results on `.ui()` thread.
-* `onErrorResumeNext()` makes sure that whatever error we encounter from fetching data is caught in this method. I wanna terminate the entire chain when there is an error there, so I return an `Observable.error()`
-* `.flatmap()` is the chaining part. I wanna be able to set whatever data I get from the API to my database. I'm not transforming the data I received using `.map()`, I'm simply doing _something else_ with that data **without** transforming it.
-* I subscribe to the last chain of observables. If an error occurred with fetching data (first observable), it would be handled (in this case, propagated to the subscribed `onError()`) with `onErrorResumeNext()`
-* I am very conscious that I'm subscribing to the DB observable (inside `flatmap()`). Any error that occurs through this observable will **NOT** be propagated to the last `subscribeBy()` methods, since it is handled inside the `subscribe()` method inside the `.flatmap()` chain.
-
-### Handling Unit Tests
-Whenever there was a need for `context`, I'd use *RobolectricTestRunner* as a jUnit test runner and supply `RuntimeEnvironment.application` as context.
-The rest of the classes that don't require context wouldn't use a special runner.
-
-In the case of an MVP structure, you'd need to unit test your _presenters_ and your _DataManager_ in terms of API and database fetching.
-
-The process of testing is pretty straight-forward and nothing ground-breaking: for each test, *Prepare*, *Run* and *Assert*.
-
-The *Preparation* process is mostly knowing what to mock and how to mock it. If it can't be mocked or you're finding this too hard, it might be a good idea to have another look in your architecture, maybe there's something you can abstract to make mocking easier. Testing always comes first.
-Also very important to remember, NEVER create a mock of the class you're testing. You'll be defeating the entire point of it. If you're testing _DataManager_, create an instance of _DataManager_ with all the nuts and bolts it requires to be fully-functional just like it would be in the wild.
-
-The *Run* process would mandate running the function to be tested.
-
-The *Assert* process would check if the output matches what should happen to the input after running it through the function.
-
-The *Preparation* step is mostly handled by Mockito. Mockito can even serve _RuntimeExceptions_ when accessing a specific function to test for failure. Its really great at that. 
-
-The *Run* and *Assert* processes are beautifully handled by RxKotlin2 when data is involved. RxKotlin2 allows supplying a `TestObserver` instance that can be checked in the *Assert* step to verify if the *Run* step succeeded or failed. Here's an example test class from _DataManagerTest_ that tests fetching quotes
-
-```
-  @Test
-  fun fetchQuotesFromDb() {
-      //Prepare
-      val quotes = DummyDataFactory.makeQuotes(2)
-      whenever(mockDatabaseHelper.fetchQuotesFromDb(any<Int>()))
-              .thenReturn(Observable.just(quotes))
-
-      //Run
-      val testObserver = TestObserver<List<Quote>>()
-      dataManager.fetchQuotesFromDb(0).subscribe(testObserver)
-
-      //Assert
-      testObserver.assertNoErrors()
-      testObserver.assertValue(quotes)
-  }
-```
+They both throw custom inherited classes from IOExceptions if an issue occurs. This makes unit testing DataManager much easier. I don't bother unit-testing DataManagerHelper or any helper class since all the functionality I'll ever need from it is used in DataManager.
 
 ### Handling Concurrency When Unit Testing
 Unit testing would require running sequentially in an essentially blocking and single-threaded manner. One can argue that using a mechanism like *CountDownLatch* can allow multi-threaded unit-tests but I argue that simplicity is key and having all the unit tests run in a blocking and single-threaded manner is much easier and straight-forward.
@@ -237,6 +197,8 @@ class TestSchedulerProvider : SchedulerProvider {
 
 I'll inject whatever instance of `SchedulerProvider` I'll need based on the situation. In the case of unit-tests, I'll inject an instance of `TestSchedulerProvider` and have all the threads lead to `trampoline()` which means its blocking and single-threaded and runs on the current thread. In the case of running real code, I'll inject an instance of `AppSchedulerProvider` which would run the threads based on which one is chosen without any changes. 
 This abstraction effectively solves the concurrency problem of unit tests.
+
+### Pros and Cons of this architecture
 
 ## Code Quality
 > TODO
@@ -334,5 +296,9 @@ I may update our Privacy Policy from time to time. Thus, you are advised to revi
 - Contact Us
 
 If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me.
+
+# Credits
+Programming by: Abdullah Obaied
+Design by [Ardavan Hp](https://dribbble.com/Ahp94)
 
 ![adjust-logo](https://www.adjust.com/assets/mediahub/adjust_standard.png)
