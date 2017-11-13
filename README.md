@@ -234,8 +234,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-![adjust-logo](https://www.adjust.com/assets/mediahub/adjust_standard.png)
-
 # Privacy Policy
 Abdullah Obaied built the Recorded app as an Open Source app. This SERVICE is provided by Abdullah Obaied at no cost and is intended for use as is.
 
@@ -299,6 +297,7 @@ If you have any questions or suggestions about my Privacy Policy, do not hesitat
 
 # Credits
 Programming by: Abdullah Obaied
-Design by [Ardavan Hp](https://dribbble.com/Ahp94)
 
-![adjust-logo](https://www.adjust.com/assets/mediahub/adjust_standard.png)
+Design by the magnificent [Ardavan Hp](https://dribbble.com/Ahp94)!!
+
+![adjust-logo](https://deviceatlas.com/sites/deviceatlas.com/files/images/adjust-logo.png)
