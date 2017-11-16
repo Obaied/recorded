@@ -3,6 +3,8 @@ Open-source, voice notes recording app.
 
 This project is to be used as a boilerplate project for client-server apps and a reference on how to use the below libraries with Kotlin. Inspiration is taken from the [ribot's android-boilerplate](https://github.com/ribot/android-boilerplate/) project.
 
+**Note**: This is more-or-less an experiment. Please don't consider this architecture to be a defacto standard. There are many issues with it (see pros and cons section below). If you ask me today, I'll say that a new project would merit using the new & shiny Android Architecture Components by Google, which I'll make a sample project about, and following an activity/views only UI without any fragments, but each project is different and has different needs. No standard is perfect and there are many ways to reach the same conclusion in software engineering. So please, do criticize this project with **valid evidence** whenever possible.
+
 ## Libraries
 - Reactive extensions by [RxKotlin 2](https://github.com/ReactiveX/RxKotlin)
 - Dependency injection by [Dagger 2](http://google.github.io/dagger/)
@@ -199,6 +201,24 @@ I'll inject whatever instance of `SchedulerProvider` I'll need based on the situ
 This abstraction effectively solves the concurrency problem of unit tests.
 
 ### Pros and Cons of this architecture
+
+#### Pros
+> TODO
+
+#### Cons
+- The use of Fragments
+
+I've always had a problem with fragments since they introduce too much complications and more code. Google Coding Horror's "WTFs per minute" standard and you'll know what I mean. Fragments are weird: 
+  - They have two versions (AppCompat and not-so-AppCompat)
+  - There have their own lifecycle
+  - `setRetainInstance(true)` is a whole new layer of complexity. It will save data, sure, but anything relating to views will be recreated. Good luck trying to reclaim your lost search adapter items from a RecyclerView without saving instance state. **Its not a silver bullet**.
+
+I did like how I was able to use them for separation of UI concerns. It didn't work too well (see `AudioPlayerService` classes and the horrible connections with `fromActivity_*` methods in this project). But, I'll stick with activities for the next project, most probably.
+
+- Too much boilerplate
+
+Kotlin can make things very terse. I like how a project called KOIN did a dependency injection framework in Kotlin without any reflection or annotations; just pure functional Kotlin with extensions and such. Very smart. It would be interesting to see how that evolves.
+As for this project, there is just too much boilerplate. I've gotten used to it and I do think that the verbosity pays off the price of a large code base, but it does get pretty big, pretty fast. Android Arch could eliminate some of this and make things cleaner.
 
 ## Code Quality
 > TODO
