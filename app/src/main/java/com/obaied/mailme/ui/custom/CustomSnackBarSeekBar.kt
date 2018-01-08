@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.custom
+package com.joseph.mailme.ui.custom
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
-import com.obaied.mailme.R
+import com.joseph.mailme.R
 
 /**
  * Created by ab on 13.10.17.

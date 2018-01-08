@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.notes
+package com.joseph.mailme.ui.notes
 
 import android.content.Context
 import android.os.Bundle
@@ -7,12 +7,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.obaied.mailme.R
-import com.obaied.mailme.data.local.PrefManager
-import com.obaied.mailme.data.model.Recording
-import com.obaied.mailme.ui.base.BaseActivity
-import com.obaied.mailme.ui.base.BasePermissionsFragment
-import com.obaied.mailme.util.d
+import com.joseph.mailme.R
+import com.joseph.mailme.data.local.PrefManager
+import com.joseph.mailme.data.model.Recording
+import com.joseph.mailme.ui.base.BaseActivity
+import com.joseph.mailme.ui.base.BasePermissionsFragment
+import com.joseph.mailme.util.d
 import kotlinx.android.synthetic.main.fragment_notes.*
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.base
+package com.joseph.mailme.ui.base
 
 import android.content.pm.PackageManager
 import android.os.Bundle

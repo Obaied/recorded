@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.anims
+package com.joseph.mailme.ui.anims
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -25,7 +25,7 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
-import com.obaied.mailme.R
+import com.joseph.mailme.R
 
 /**
  * Created by ab on 19.10.17.

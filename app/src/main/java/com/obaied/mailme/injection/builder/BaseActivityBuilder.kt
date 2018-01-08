@@ -1,13 +1,13 @@
-package com.obaied.mailme.injection.builder
+package com.joseph.mailme.injection.builder
 
-import com.obaied.mailme.injection.module.AboutActivityModule
-import com.obaied.mailme.injection.module.NotesActivityModule
-import com.obaied.mailme.injection.module.RecordingActivityModule
-import com.obaied.mailme.injection.scope.ActivityScope
-import com.obaied.mailme.injection.subcomponent.BaseActivitySubcomponent
-import com.obaied.mailme.ui.about.AboutActivity
-import com.obaied.mailme.ui.notes.NotesActivity
-import com.obaied.mailme.ui.recording.RecordingActivity
+import com.joseph.mailme.injection.module.AboutActivityModule
+import com.joseph.mailme.injection.module.NotesActivityModule
+import com.joseph.mailme.injection.module.RecordingActivityModule
+import com.joseph.mailme.injection.scope.ActivityScope
+import com.joseph.mailme.injection.subcomponent.BaseActivitySubcomponent
+import com.joseph.mailme.ui.about.AboutActivity
+import com.joseph.mailme.ui.notes.NotesActivity
+import com.joseph.mailme.ui.recording.RecordingActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

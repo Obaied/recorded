@@ -1,7 +1,7 @@
-package com.obaied.mailme.ui.notes
+package com.joseph.mailme.ui.notes
 
-import com.obaied.mailme.data.model.Recording
-import com.obaied.mailme.ui.base.MvpView
+import com.joseph.mailme.data.model.Recording
+import com.joseph.mailme.ui.base.MvpView
 
 /**
  * Created by ab on 19/03/2017.

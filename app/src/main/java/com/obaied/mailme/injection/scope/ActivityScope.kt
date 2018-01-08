@@ -1,4 +1,4 @@
-package com.obaied.mailme.injection.scope
+package com.joseph.mailme.injection.scope
 
 import javax.inject.Scope
 

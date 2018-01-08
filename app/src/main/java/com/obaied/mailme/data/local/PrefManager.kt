@@ -1,4 +1,4 @@
-package com.obaied.mailme.data.local
+package com.joseph.mailme.data.local
 
 import android.content.Context
 import android.preference.PreferenceManager

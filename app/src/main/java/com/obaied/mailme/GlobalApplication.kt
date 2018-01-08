@@ -1,10 +1,10 @@
-package com.obaied.mailme
+package com.joseph.mailme
 
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import com.obaied.mailme.data.local.NotificationChannelManager
-import com.obaied.mailme.injection.component.DaggerApplicationComponent
+import com.joseph.mailme.data.local.NotificationChannelManager
+import com.joseph.mailme.injection.component.DaggerApplicationComponent
 import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

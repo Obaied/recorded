@@ -1,8 +1,8 @@
-package com.obaied.mailme.injection.module
+package com.joseph.mailme.injection.module
 
-import com.obaied.mailme.data.DataManager
-import com.obaied.mailme.ui.recording.RecordingPresenter
-import com.obaied.mailme.util.Schedulers.SchedulerProvider
+import com.joseph.mailme.data.DataManager
+import com.joseph.mailme.ui.recording.RecordingPresenter
+import com.joseph.mailme.util.Schedulers.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable

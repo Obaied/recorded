@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.base
+package com.joseph.mailme.ui.base
 
 /**
  * Created by ab on 12.10.17.

@@ -1,9 +1,9 @@
-package com.obaied.mailme.data
+package com.joseph.mailme.data
 
 import android.media.MediaMetadataRetriever
 import android.net.Uri
-import com.obaied.mailme.GlobalApplication
-import com.obaied.mailme.data.model.Recording
+import com.joseph.mailme.GlobalApplication
+import com.joseph.mailme.data.model.Recording
 import java.io.File
 import java.io.IOException
 import java.text.DecimalFormat

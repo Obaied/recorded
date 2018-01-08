@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.anims
+package com.joseph.mailme.ui.anims
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

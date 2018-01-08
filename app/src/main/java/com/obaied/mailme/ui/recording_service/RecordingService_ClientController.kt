@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.recording_service
+package com.joseph.mailme.ui.recording_service
 
 import android.content.Context
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.notes
+package com.joseph.mailme.ui.notes
 
 import android.Manifest
 import android.os.Bundle
@@ -7,12 +7,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.crashlytics.android.Crashlytics
-import com.obaied.mailme.R
-import com.obaied.mailme.ui.audioplayer_service.AudioPlayerManager
-import com.obaied.mailme.ui.audioplayer_service.AudioPlayerService_ClientController
-import com.obaied.mailme.ui.base.BasePermissionsActivity
-import com.obaied.mailme.ui.custom.CustomSnackBarSeekBar
-import com.obaied.mailme.util.d
+import com.joseph.mailme.R
+import com.joseph.mailme.ui.audioplayer_service.AudioPlayerManager
+import com.joseph.mailme.ui.audioplayer_service.AudioPlayerService_ClientController
+import com.joseph.mailme.ui.base.BasePermissionsActivity
+import com.joseph.mailme.ui.custom.CustomSnackBarSeekBar
+import com.joseph.mailme.util.d
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_notes.*
 import javax.inject.Inject

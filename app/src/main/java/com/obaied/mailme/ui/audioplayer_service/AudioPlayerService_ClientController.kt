@@ -1,6 +1,6 @@
-package com.obaied.mailme.ui.audioplayer_service
+package com.joseph.mailme.ui.audioplayer_service
 
-import com.obaied.mailme.ui.recording_service.AudioPlayerService_ServerController
+import com.joseph.mailme.ui.recording_service.AudioPlayerService_ServerController
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

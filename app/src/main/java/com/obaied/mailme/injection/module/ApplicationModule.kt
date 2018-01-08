@@ -1,11 +1,11 @@
-package com.obaied.mailme.injection.module
+package com.joseph.mailme.injection.module
 
-import com.obaied.mailme.data.DataManager
-import com.obaied.mailme.data.DataManagerHelper
-import com.obaied.mailme.data.local.PrefManager
-import com.obaied.mailme.ui.navigation.Navigator
-import com.obaied.mailme.util.Schedulers.AppSchedulerProvider
-import com.obaied.mailme.util.Schedulers.SchedulerProvider
+import com.joseph.mailme.data.DataManager
+import com.joseph.mailme.data.DataManagerHelper
+import com.joseph.mailme.data.local.PrefManager
+import com.joseph.mailme.ui.navigation.Navigator
+import com.joseph.mailme.util.Schedulers.AppSchedulerProvider
+import com.joseph.mailme.util.Schedulers.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable

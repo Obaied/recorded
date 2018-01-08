@@ -1,4 +1,4 @@
-package com.obaied.mailme.util
+package com.joseph.mailme.util
 
 import java.util.concurrent.TimeUnit
 

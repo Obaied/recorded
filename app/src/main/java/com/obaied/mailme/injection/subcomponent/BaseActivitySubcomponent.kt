@@ -1,6 +1,6 @@
-package com.obaied.mailme.injection.subcomponent
+package com.joseph.mailme.injection.subcomponent
 
-import com.obaied.mailme.ui.base.BaseActivity
+import com.joseph.mailme.ui.base.BaseActivity
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
 

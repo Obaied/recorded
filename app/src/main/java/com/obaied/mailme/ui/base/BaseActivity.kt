@@ -1,12 +1,12 @@
-package com.obaied.mailme.ui.base
+package com.joseph.mailme.ui.base
 
 import android.app.Fragment
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
-import com.obaied.mailme.R
-import com.obaied.mailme.ui.navigation.Navigator
-import com.obaied.mailme.ui.notes.NotesFragment
+import com.joseph.mailme.R
+import com.joseph.mailme.ui.navigation.Navigator
+import com.joseph.mailme.ui.notes.NotesFragment
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

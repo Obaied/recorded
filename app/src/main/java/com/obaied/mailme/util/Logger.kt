@@ -1,7 +1,7 @@
 @file:Suppress("unused")
 @file:JvmName("Logger")
 
-package com.obaied.mailme.util
+package com.joseph.mailme.util
 
 import timber.log.Timber
 

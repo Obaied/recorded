@@ -1,6 +1,6 @@
-package com.obaied.mailme
+package com.joseph.mailme
 
-import com.obaied.mailme.util.AppUtil
+import com.joseph.mailme.util.AppUtil
 import org.junit.Test
 import kotlin.test.assert
 

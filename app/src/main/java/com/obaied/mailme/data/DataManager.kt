@@ -1,6 +1,6 @@
-package com.obaied.mailme.data
+package com.joseph.mailme.data
 
-import com.obaied.mailme.data.model.Recording
+import com.joseph.mailme.data.model.Recording
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.File

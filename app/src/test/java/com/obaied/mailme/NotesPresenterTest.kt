@@ -1,11 +1,11 @@
-package com.obaied.mailme
+package com.joseph.mailme
 
 import com.nhaarman.mockito_kotlin.*
-import com.obaied.mailme.data.DataManager
-import com.obaied.mailme.data.model.Recording
-import com.obaied.mailme.ui.notes.NotesMvpView
-import com.obaied.mailme.ui.notes.NotesPresenter
-import com.obaied.mailme.util.Schedulers.TestSchedulerProvider
+import com.joseph.mailme.data.DataManager
+import com.joseph.mailme.data.model.Recording
+import com.joseph.mailme.ui.notes.NotesMvpView
+import com.joseph.mailme.ui.notes.NotesPresenter
+import com.joseph.mailme.util.Schedulers.TestSchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single

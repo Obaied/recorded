@@ -1,14 +1,14 @@
-package com.obaied.mailme.ui.recording
+package com.joseph.mailme.ui.recording
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.obaied.mailme.BuildConfig
-import com.obaied.mailme.R
-import com.obaied.mailme.ui.base.BasePermissionsActivity
-import com.obaied.mailme.ui.recording_service.RecordingService
+import com.joseph.mailme.BuildConfig
+import com.joseph.mailme.R
+import com.joseph.mailme.ui.base.BasePermissionsActivity
+import com.joseph.mailme.ui.recording_service.RecordingService
 import kotlinx.android.synthetic.main.activity_recording.*
 
 class RecordingActivity :

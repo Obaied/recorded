@@ -1,4 +1,4 @@
-package com.obaied.mailme.injection.module
+package com.joseph.mailme.injection.module
 
 import dagger.Module
 

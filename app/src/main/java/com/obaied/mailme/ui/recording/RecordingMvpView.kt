@@ -1,6 +1,6 @@
-package com.obaied.mailme.ui.recording
+package com.joseph.mailme.ui.recording
 
-import com.obaied.mailme.ui.base.MvpView
+import com.joseph.mailme.ui.base.MvpView
 
 /**
  * Created by ab on 19/03/2017.

@@ -1,9 +1,9 @@
-package com.obaied.mailme.ui.notes
+package com.joseph.mailme.ui.notes
 
-import com.obaied.mailme.data.DataManager
-import com.obaied.mailme.ui.base.BasePresenter
-import com.obaied.mailme.util.Schedulers.SchedulerProvider
-import com.obaied.mailme.util.d
+import com.joseph.mailme.data.DataManager
+import com.joseph.mailme.ui.base.BasePresenter
+import com.joseph.mailme.util.Schedulers.SchedulerProvider
+import com.joseph.mailme.util.d
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy

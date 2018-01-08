@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.audioplayer_service
+package com.joseph.mailme.ui.audioplayer_service
 
 import android.app.Service
 import android.content.Intent
@@ -6,9 +6,9 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.IBinder
 import android.widget.Toast
-import com.obaied.mailme.ui.notes.NotesActivity
-import com.obaied.mailme.ui.recording_service.AudioPlayerService_ServerController
-import com.obaied.mailme.util.d
+import com.joseph.mailme.ui.notes.NotesActivity
+import com.joseph.mailme.ui.recording_service.AudioPlayerService_ServerController
+import com.joseph.mailme.util.d
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 

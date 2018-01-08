@@ -1,11 +1,11 @@
-package com.obaied.mailme.injection.builder
+package com.joseph.mailme.injection.builder
 
-import com.obaied.mailme.injection.scope.FragmentScope
-import com.obaied.mailme.injection.module.NotesFragmentModule
-import com.obaied.mailme.injection.module.RecordingFragmentModule
-import com.obaied.mailme.injection.subcomponent.BaseFragmentSubcomponent
-import com.obaied.mailme.ui.notes.NotesFragment
-import com.obaied.mailme.ui.recording.RecordingFragment
+import com.joseph.mailme.injection.scope.FragmentScope
+import com.joseph.mailme.injection.module.NotesFragmentModule
+import com.joseph.mailme.injection.module.RecordingFragmentModule
+import com.joseph.mailme.injection.subcomponent.BaseFragmentSubcomponent
+import com.joseph.mailme.ui.notes.NotesFragment
+import com.joseph.mailme.ui.recording.RecordingFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

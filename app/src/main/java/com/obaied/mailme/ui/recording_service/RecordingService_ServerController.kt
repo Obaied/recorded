@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.recording_service
+package com.joseph.mailme.ui.recording_service
 
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

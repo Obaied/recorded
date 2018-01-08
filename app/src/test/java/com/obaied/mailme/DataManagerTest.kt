@@ -1,11 +1,11 @@
-package com.obaied.mailme
+package com.joseph.mailme
 
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doThrow
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import com.obaied.mailme.data.DataManager
-import com.obaied.mailme.data.DataManagerHelper
+import com.joseph.mailme.data.DataManager
+import com.joseph.mailme.data.DataManagerHelper
 import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
 import org.junit.Before

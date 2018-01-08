@@ -1,11 +1,11 @@
-package com.obaied.mailme.ui.audioplayer_service
+package com.joseph.mailme.ui.audioplayer_service
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import com.obaied.mailme.util.d
-import com.obaied.mailme.util.i
-import com.obaied.mailme.util.w
+import com.joseph.mailme.util.d
+import com.joseph.mailme.util.i
+import com.joseph.mailme.util.w
 import org.greenrobot.eventbus.EventBus
 
 /**

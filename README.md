@@ -1,5 +1,4 @@
 # About
-THIS IS A SYMLINK
 Open-source, voice notes recording app.
 
 This project is to be used as a boilerplate project for client-server apps and a reference on how to use the below libraries with Kotlin. Inspiration is taken from the [ribot's android-boilerplate](https://github.com/ribot/android-boilerplate/) project.
@@ -10,7 +9,7 @@ This project is to be used as a boilerplate project for client-server apps and a
 - Reactive extensions by [RxKotlin 2](https://github.com/ReactiveX/RxKotlin)
 - Dependency injection by [Dagger 2](http://google.github.io/dagger/)
 - Logging by [Timber](https://github.com/JakeWharton/timber) with native Kotlin extensions
-- Complimentary and randomized colour algorithms by [Colours](https://github.com/Obaied/colours)
+- Complimentary and randomized colour algorithms by [Colours](https://github.com/afjoseph/colours)
 - Mocking with [Mockito-Kotlin](https://github.com/nhaarman/mockito-kotlin)
 - [Checkstyle](http://checkstyle.sourceforge.net/), [PMD](https://pmd.github.io/) and [Findbugs](http://findbugs.sourceforge.net/) for code analysis
 
@@ -22,7 +21,7 @@ The architecture is mostly based on a modified version of ribot's Android archit
 The idea is to be able to compartmentalize every aspect of the project to testable pieces. Also, extending the project and introducing newbies to it should not be a chaotic task. The architecture does contain a fair amount of nuts and bolts, but its nothing too alien to [Clean Architecture](https://www.youtube.com/watch?v=Nsjsiz2A9mg). Feel free to consult this [fantastic boilerplate by Android10](https://github.com/android10/Android-CleanArchitecture) as another source of knowledge
 
 ### Dependency Injection
-I made an extensive write-up [over here](https://github.com/Obaied/BareBonesAndroidDagger) relating how I approach dependency injection. I'd love to get any feedback on it. Drop an issue and we'll talk. It would be good to list down what I've written over there with a couple of related examples to Recorded.
+I made an extensive write-up [over here](https://github.com/afjoseph/BareBonesAndroidDagger) relating how I approach dependency injection. I'd love to get any feedback on it. Drop an issue and we'll talk. It would be good to list down what I've written over there with a couple of related examples to Recorded.
 
 [Dagger 2.12 released proper support for Android](https://google.github.io/dagger/android). 
 
@@ -35,7 +34,7 @@ The hierarchy goes as follows:
 - **Activity Level**: Dependencies for a specific activity.
 - **Fragment Level**: Dependencies for a specific fragment.
 
-In the [BareBonesAndroidDagger](https://github.com/Obaied/BareBonesAndroidDagger), I provide a detailed class breakdown. For here, I'll just write about a couple of Dagger modules.
+In the [BareBonesAndroidDagger](https://github.com/afjoseph/BareBonesAndroidDagger), I provide a detailed class breakdown. For here, I'll just write about a couple of Dagger modules.
 
 #### Class Breakdown: `ApplicationModule`
 
@@ -234,7 +233,7 @@ To run **unit** tests on your machine:
 
 ## License
 ```
-Copyright (c) 2017 Abdullah Obaied
+Copyright (c) 2017 Abdullah Joseph
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -256,7 +255,7 @@ SOFTWARE.
 ```
 
 # Privacy Policy
-Abdullah Obaied built the Recorded app as an Open Source app. This SERVICE is provided by Abdullah Obaied at no cost and is intended for use as is.
+Abdullah Joseph built the Recorded app as an Open Source app. This SERVICE is provided by Abdullah Joseph at no cost and is intended for use as is.
 
 This page is used to inform website visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
 
@@ -317,7 +316,7 @@ I may update our Privacy Policy from time to time. Thus, you are advised to revi
 If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me.
 
 # Credits
-Programming by: Abdullah Obaied
+Programming by: Abdullah Joseph
 
 Design by the magnificent [Ardavan Hp](https://dribbble.com/Ahp94)!!
 

@@ -1,7 +1,7 @@
-package com.obaied.mailme.ui.base
+package com.joseph.mailme.ui.base
 
-import com.obaied.mailme.data.DataManager
-import com.obaied.mailme.util.Schedulers.SchedulerProvider
+import com.joseph.mailme.data.DataManager
+import com.joseph.mailme.util.Schedulers.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 

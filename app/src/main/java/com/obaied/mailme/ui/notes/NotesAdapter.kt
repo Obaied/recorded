@@ -1,13 +1,13 @@
-package com.obaied.mailme.ui.notes
+package com.joseph.mailme.ui.notes
 
 import android.support.v7.widget.RecyclerView
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.obaied.mailme.R
-import com.obaied.mailme.data.model.Recording
-import com.obaied.mailme.ui.base.BaseActivity
+import com.joseph.mailme.R
+import com.joseph.mailme.data.model.Recording
+import com.joseph.mailme.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.item_recording.view.*
 import javax.inject.Inject
 

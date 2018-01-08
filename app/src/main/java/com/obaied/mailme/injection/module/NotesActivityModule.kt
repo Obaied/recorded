@@ -1,7 +1,7 @@
-package com.obaied.mailme.injection.module
+package com.joseph.mailme.injection.module
 
-import com.obaied.mailme.ui.audioplayer_service.AudioPlayerManager
-import com.obaied.mailme.ui.notes.NotesActivity
+import com.joseph.mailme.ui.audioplayer_service.AudioPlayerManager
+import com.joseph.mailme.ui.notes.NotesActivity
 import dagger.Module
 import dagger.Provides
 

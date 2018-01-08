@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.navigation
+package com.joseph.mailme.ui.navigation
 
 import android.app.Activity
 import android.app.ActivityOptions
@@ -7,10 +7,10 @@ import android.content.Intent
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.view.View
-import com.obaied.mailme.R
-import com.obaied.mailme.ui.about.AboutActivity
-import com.obaied.mailme.ui.anims.ActivityCircularTransform
-import com.obaied.mailme.ui.recording.RecordingActivity
+import com.joseph.mailme.R
+import com.joseph.mailme.ui.about.AboutActivity
+import com.joseph.mailme.ui.anims.ActivityCircularTransform
+import com.joseph.mailme.ui.recording.RecordingActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 

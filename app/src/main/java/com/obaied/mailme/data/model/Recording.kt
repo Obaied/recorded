@@ -1,4 +1,4 @@
-package com.obaied.mailme.data.model
+package com.joseph.mailme.data.model
 
 /**
  * Created by ab on 06.10.17.

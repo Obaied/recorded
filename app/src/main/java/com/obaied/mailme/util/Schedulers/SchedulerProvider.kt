@@ -1,4 +1,4 @@
-package com.obaied.mailme.util.Schedulers
+package com.joseph.mailme.util.Schedulers
 
 import io.reactivex.Scheduler
 

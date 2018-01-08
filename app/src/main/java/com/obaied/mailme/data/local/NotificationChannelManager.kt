@@ -1,8 +1,8 @@
-package com.obaied.mailme.data.local
+package com.joseph.mailme.data.local
 
 import android.content.Context
 import android.os.Build
-import com.obaied.mailme.R
+import com.joseph.mailme.R
 
 /**
  * Created by ab on 17.10.17.

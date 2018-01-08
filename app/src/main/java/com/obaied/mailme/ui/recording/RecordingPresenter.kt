@@ -1,8 +1,8 @@
-package com.obaied.mailme.ui.recording
+package com.joseph.mailme.ui.recording
 
-import com.obaied.mailme.data.DataManager
-import com.obaied.mailme.ui.base.BasePresenter
-import com.obaied.mailme.util.Schedulers.SchedulerProvider
+import com.joseph.mailme.data.DataManager
+import com.joseph.mailme.ui.base.BasePresenter
+import com.joseph.mailme.util.Schedulers.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject

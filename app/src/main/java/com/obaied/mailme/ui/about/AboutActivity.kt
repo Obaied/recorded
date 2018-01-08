@@ -1,10 +1,10 @@
-package com.obaied.mailme.ui.about
+package com.joseph.mailme.ui.about
 
 import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
-import com.obaied.mailme.R
-import com.obaied.mailme.ui.base.BaseActivity
+import com.joseph.mailme.R
+import com.joseph.mailme.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_about.*
 
 class AboutActivity :

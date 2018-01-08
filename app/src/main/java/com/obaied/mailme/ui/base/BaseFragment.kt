@@ -1,11 +1,11 @@
-package com.obaied.mailme.ui.base
+package com.joseph.mailme.ui.base
 
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.obaied.mailme.util.d
+import com.joseph.mailme.util.d
 import dagger.android.AndroidInjection
 
 /**

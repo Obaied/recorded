@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.recording_service
+package com.joseph.mailme.ui.recording_service
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -10,13 +10,13 @@ import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
 import android.support.v4.app.NotificationCompat
-import com.obaied.mailme.R
-import com.obaied.mailme.data.local.NotificationChannelManager
-import com.obaied.mailme.ui.recording.RecordingActivity
-import com.obaied.mailme.util.AppUtil
-import com.obaied.mailme.util.AppUtil.getHumanReadableDuration
-import com.obaied.mailme.util.d
-import com.obaied.mailme.util.e
+import com.joseph.mailme.R
+import com.joseph.mailme.data.local.NotificationChannelManager
+import com.joseph.mailme.ui.recording.RecordingActivity
+import com.joseph.mailme.util.AppUtil
+import com.joseph.mailme.util.AppUtil.getHumanReadableDuration
+import com.joseph.mailme.util.d
+import com.joseph.mailme.util.e
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -29,8 +29,8 @@ class RecordingService :
         Service(),
         RecordingService_ServerController.ControllerListener {
     companion object {
-        val INTENT_EXTRA_RECORDING_FILENAME = "com.obaied.INTENT_EXTRA_RECORDING_FILENAME"
-        val NOTIFICATION_INTENT_EXTRA = "com.obaied.NOTIFICATION_INTENT_EXTRA"
+        val INTENT_EXTRA_RECORDING_FILENAME = "com.joseph.INTENT_EXTRA_RECORDING_FILENAME"
+        val NOTIFICATION_INTENT_EXTRA = "com.joseph.NOTIFICATION_INTENT_EXTRA"
 
         val FOREGROUND_ID = 1338
         val CHANNEL_ID = 1339

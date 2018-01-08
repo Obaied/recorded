@@ -1,4 +1,4 @@
-package com.obaied.mailme.ui.recording
+package com.joseph.mailme.ui.recording
 
 import android.app.Dialog
 import android.content.Context
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.widget.EditText
-import com.obaied.mailme.R
+import com.joseph.mailme.R
 
 /**
  * Created by ab on 06.10.17.
